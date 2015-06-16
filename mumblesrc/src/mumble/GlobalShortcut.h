@@ -159,27 +159,27 @@ enum ShortcutTargetTypes {
 	SHORTCUT_TARGET_PARENT_SUBCHANNEL = -12
 };
 
-// /**
-//  * Widget used to display and change a ShortcutTarget. The widget displays a textual representation
-//  * of a ShortcutTarget and enable its editing with a ShortCutTargetDialog.
-//  */
-// class ShortcutTargetWidget : public QFrame {
-// 	private:
-// 		Q_OBJECT
-// 		Q_DISABLE_COPY(ShortcutTargetWidget)
-// 		Q_PROPERTY(ShortcutTarget target READ target WRITE setTarget USER true)
-// 	protected:
-// 		ShortcutTarget stTarget;
-// 		QLineEdit *qleTarget;
-// 		QToolButton *qtbEdit;
-// 	public:
-// 		ShortcutTargetWidget(QWidget *p = NULL);
-// 		ShortcutTarget target() const;
-// 		void setTarget(const ShortcutTarget &);
-// 		static QString targetString(const ShortcutTarget &);
-// 	public slots:
-// 		void on_qtbEdit_clicked();
-// };
+/**
+ * Widget used to display and change a ShortcutTarget. The widget displays a textual representation
+ * of a ShortcutTarget and enable its editing with a ShortCutTargetDialog.
+ */
+class ShortcutTargetWidget : public QFrame {
+	private:
+		Q_OBJECT
+		Q_DISABLE_COPY(ShortcutTargetWidget)
+		Q_PROPERTY(ShortcutTarget target READ target WRITE setTarget USER true)
+	protected:
+		ShortcutTarget stTarget;
+		QLineEdit *qleTarget;
+		QToolButton *qtbEdit;
+	public:
+		ShortcutTargetWidget(QWidget *p = NULL);
+		ShortcutTarget target() const;
+		void setTarget(const ShortcutTarget &);
+		static QString targetString(const ShortcutTarget &);
+	public slots:
+		void on_qtbEdit_clicked();
+};
 
 /**
  * Used to get custom display and edit behaviour for the model used in GlobalShortcutConfig::qtwShortcuts.
