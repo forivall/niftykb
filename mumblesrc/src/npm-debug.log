@@ -1,0 +1,22 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'C:\\Program Files\\iojs\\node.exe',
+1 verbose cli   'C:\\Program Files\\iojs\\node_modules\\npm\\bin\\npm-cli.js',
+1 verbose cli   'completion' ]
+2 info using npm@2.7.0
+3 info using node@v1.5.2-nightly20150313056ed4b0c9
+4 verbose stack Error: npm completion not supported on windows
+4 verbose stack     at EventEmitter.completion (C:\Program Files\iojs\node_modules\npm\lib\completion.js:51:13)
+4 verbose stack     at Object.commandCache.(anonymous function) (C:\Program Files\iojs\node_modules\npm\lib\npm.js:219:11)
+4 verbose stack     at EventEmitter.<anonymous> (C:\Program Files\iojs\node_modules\npm\bin\npm-cli.js:72:28)
+4 verbose stack     at process._tickCallback (node.js:349:13)
+5 verbose cwd E:\Jordan\Code\repos\git\dinputkeydebug\mumblesrc\mumble\src
+6 error Windows_NT 6.1.7601
+7 error argv "C:\\Program Files\\iojs\\node.exe" "C:\\Program Files\\iojs\\node_modules\\npm\\bin\\npm-cli.js" "completion"
+8 error node v1.5.2-nightly20150313056ed4b0c9
+9 error npm  v2.7.0
+10 error code ENOTSUP
+11 error errno 129
+12 error nospc npm completion not supported on windows
+12 error nospc This is most likely not a problem with npm itself
+12 error nospc and is related to insufficient space on your system.
+13 verbose exit [ 129, true ]
