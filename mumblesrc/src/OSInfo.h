@@ -36,7 +36,7 @@ class QDomElement;
 
 class OSInfo {
 	public:
-		static QString getMacHash(const QList<QHostAddress> & = QList<QHostAddress>());
+		// static QString getMacHash(const QList<QHostAddress> & = QList<QHostAddress>());
 		static QString getOS();
 		static QString getOSVersion();
 		static QString getOSDisplayableVersion();

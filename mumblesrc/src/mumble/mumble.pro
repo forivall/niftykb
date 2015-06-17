@@ -94,7 +94,7 @@ SOURCES *=
     GlobalShortcut.cpp
 
 DIST		*= ../../icons/mumble.ico licenses.h smallft.h ../../icons/mumble.xpm murmur_pch.h mumble.plist
-RESOURCES	*= mumble.qrc mumble_translations.qrc mumble_flags.qrc
+# RESOURCES	*=
 FORMS *= GlobalShortcut.ui
 
 
@@ -103,11 +103,11 @@ CONFIG(no-xinput2) {
 }
 
 win32 {
-  CONFIG(mumble_dll) {
-    RC_FILE = mumble_dll.rc
-  } else {
-    RC_FILE = mumble.rc
-  }
+  # CONFIG(mumble_dll) {
+  #   RC_FILE = mumble_dll.rc
+  # } else {
+  #   RC_FILE = mumble.rc
+  # }
   HEADERS	*= GlobalShortcut_win.h
   SOURCES	*= GlobalShortcut_win.cpp
   LIBS		*= -ldxguid -ldinput8

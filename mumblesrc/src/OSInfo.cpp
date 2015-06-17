@@ -28,21 +28,21 @@
    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#include "murmur_pch.h"
+// #include "murmur_pch.h"
 
-#if defined(Q_OS_WIN)
+// #if defined(Q_OS_WIN)
 #include <intrin.h>
-#endif
+// #endif
 
-#if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
-#include <sys/utsname.h>
-#endif
-
-#if defined(Q_OS_MAC)
-#include <sys/types.h>
-#include <sys/sysctl.h>
-#include <mach-o/arch.h>
-#endif
+// #if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
+// #include <sys/utsname.h>
+// #endif
+//
+// #if defined(Q_OS_MAC)
+// #include <sys/types.h>
+// #include <sys/sysctl.h>
+// #include <mach-o/arch.h>
+// #endif
 
 #include "OSInfo.h"
 #include "Version.h"

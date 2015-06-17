@@ -28,7 +28,7 @@
    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#include "mumble_pch.hpp"
+// #include "mumble_pch.hpp"
 
 #include "GlobalShortcut_win.h"
 
