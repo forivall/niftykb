@@ -15,10 +15,7 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QTreeWidget" name="treeWidget">
-     <attribute name="headerVisible">
-      <bool>false</bool>
-     </attribute>
+    <widget class="QTreeWidget" name="qtwShortcuts">
      <column>
       <property name="text">
        <string>Key</string>
@@ -39,14 +36,14 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <widget class="QPushButton" name="pushButton">
+      <widget class="QPushButton" name="qpbAdd">
        <property name="text">
         <string>Add</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_2">
+      <widget class="QPushButton" name="qpbRemove">
        <property name="text">
         <string>Remove</string>
        </property>
@@ -64,6 +61,13 @@
         </size>
        </property>
       </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton_3">
+       <property name="text">
+        <string>Save</string>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>

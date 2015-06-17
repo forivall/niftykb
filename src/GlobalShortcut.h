@@ -34,14 +34,15 @@
 
 #include <QtCore/QtGlobal>
 #include <QtCore/QThread>
+
 #include <QtWidgets/QToolButton>
 #include <QtWidgets/QStyledItemDelegate>
+#include <QtWidgets/QLineEdit>
+#include <QtWidgets/QComboBox>
+#include <QtWidgets/QDialog>
 
-#include "ConfigDialog.h"
+#include "Settings.h"
 #include "Timer.h"
-
-#include "ui_GlobalShortcut.h"
-#include "ui_GlobalShortcutTarget.h"
 
 class GlobalShortcut : public QObject {
 		friend class GlobalShortcutEngine;
@@ -125,55 +126,12 @@ class ShortcutToggleWidget : public QComboBox {
 		void setIndex(int);
 };
 
-/**
- * Dialog which is used to select the targets of a targeted shortcut like Whisper.
- */
-class ShortcutTargetDialog : public QDialog, public Ui::GlobalShortcutTarget {
-	private:
-		Q_OBJECT
-		Q_DISABLE_COPY(ShortcutTargetDialog)
-	protected:
-		QMap<QString, QString> qmHashNames;
-		ShortcutTarget stTarget;
-	public:
-		ShortcutTargetDialog(const ShortcutTarget &, QWidget *p = NULL);
-		ShortcutTarget target() const;
-	public slots:
-		void accept() Q_DECL_OVERRIDE;
-		void on_qrbUsers_clicked();
-		void on_qrbChannel_clicked();
-		void on_qpbAdd_clicked();
-		void on_qpbRemove_clicked();
-};
-
 enum ShortcutTargetTypes {
 	SHORTCUT_TARGET_ROOT = -1,
 	SHORTCUT_TARGET_PARENT = -2,
 	SHORTCUT_TARGET_CURRENT = -3,
 	SHORTCUT_TARGET_SUBCHANNEL = -4,
 	SHORTCUT_TARGET_PARENT_SUBCHANNEL = -12
-};
-
-/**
- * Widget used to display and change a ShortcutTarget. The widget displays a textual representation
- * of a ShortcutTarget and enable its editing with a ShortCutTargetDialog.
- */
-class ShortcutTargetWidget : public QFrame {
-	private:
-		Q_OBJECT
-		Q_DISABLE_COPY(ShortcutTargetWidget)
-		Q_PROPERTY(ShortcutTarget target READ target WRITE setTarget USER true)
-	protected:
-		ShortcutTarget stTarget;
-		QLineEdit *qleTarget;
-		QToolButton *qtbEdit;
-	public:
-		ShortcutTargetWidget(QWidget *p = NULL);
-		ShortcutTarget target() const;
-		void setTarget(const ShortcutTarget &);
-		static QString targetString(const ShortcutTarget &);
-	public slots:
-		void on_qtbEdit_clicked();
 };
 
 /**
@@ -193,41 +151,6 @@ class ShortcutDelegate : public QStyledItemDelegate {
 		ShortcutDelegate(QObject *);
 		~ShortcutDelegate() Q_DECL_OVERRIDE;
 		QString displayText(const QVariant &, const QLocale &) const Q_DECL_OVERRIDE;
-};
-
-/**
- * Contains the Shortcut tab from the settings. This ConfigWidget provides
- * the user with the interface to add/edit/delete global shortcuts in Mumble.
- */
-class GlobalShortcutConfig : public ConfigWidget, public Ui::GlobalShortcut {
-		friend class ShortcutActionWidget;
-	private:
-		Q_OBJECT
-		Q_DISABLE_COPY(GlobalShortcutConfig)
-	protected:
-		QList<Shortcut> qlShortcuts;
-		QTreeWidgetItem *itemForShortcut(const Shortcut &) const;
-		bool bExpert;
-		bool showWarning() const;
-		bool eventFilter(QObject *, QEvent *) Q_DECL_OVERRIDE;
-	public:
-		GlobalShortcutConfig(Settings &st);
-		virtual QString title() const Q_DECL_OVERRIDE;
-		virtual QIcon icon() const Q_DECL_OVERRIDE;
-	public slots:
-		void accept() const Q_DECL_OVERRIDE;
-		void save() const Q_DECL_OVERRIDE;
-		void load(const Settings &r) Q_DECL_OVERRIDE;
-		void reload();
-		bool expert(bool) Q_DECL_OVERRIDE;
-		void commit();
-		void on_qcbEnableGlobalShortcuts_stateChanged(int);
-		void on_qpbAdd_clicked(bool);
-		void on_qpbRemove_clicked(bool);
-		void on_qtwShortcuts_currentItemChanged(QTreeWidgetItem *, QTreeWidgetItem *);
-		void on_qtwShortcuts_itemChanged(QTreeWidgetItem *, int);
-		void on_qpbOpenAccessibilityPrefs_clicked();
-		void on_qpbSkipWarning_clicked();
 };
 
 struct ShortcutKey {

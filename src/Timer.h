@@ -27,76 +27,34 @@
    NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-#include "Timer.h"
 
-Timer::Timer(bool start) {
-	uiStart = start ? now() : 0;
-}
+#ifndef MUMBLE_TIMER_H_
+#define MUMBLE_TIMER_H_
 
-quint64 Timer::elapsed() const {
-	Q_ASSERT(uiStart != 0);
-	return now() - uiStart;
-}
+#include <QtCore/QtGlobal>
 
-bool Timer::isElapsed(quint64 us) {
-	Q_ASSERT(uiStart != 0);
-	if (elapsed() > us) {
-		uiStart += us;
-		return true;
-	}
-	return false;
-}
+// All timer resolutions are in microseconds.
 
-quint64 Timer::restart() {
-	quint64 n = now();
-	quint64 e = n - uiStart;
-	uiStart = n;
-	return e;
-}
+class Timer {
+	protected:
+		quint64 uiStart;
+		static quint64 now();
+	public:
+		Timer(bool start = true);
+		bool isElapsed(quint64 us);
+		quint64 elapsed() const;
+		quint64 restart();
+		bool isStarted() const;
 
-bool Timer::isStarted() const {
-	return uiStart != 0;
-}
+		/**
+		 * Compares the elapsed time, not the start time
+		 */
+		bool operator<(const Timer &other) const;
 
-bool Timer::operator<(const Timer &other) const {
-	return uiStart > other.uiStart;
-}
+		/**
+		 * Compares the elapsed time, not the start time
+		 */
+		bool operator>(const Timer &other) const;
+};
 
-bool Timer::operator>(const Timer &other) const {
-	return uiStart < other.uiStart;
-}
-
-#if defined(Q_OS_WIN)
-#include <windows.h>
-
-quint64 Timer::now() {
-	static double scale = 0;
-
-	if (scale == 0) {
-		LARGE_INTEGER freq;
-		QueryPerformanceFrequency(&freq);
-		scale = 1000000. / freq.QuadPart;
-	}
-
-	LARGE_INTEGER li;
-	QueryPerformanceCounter(&li);
-	quint64 e = li.QuadPart;
-
-	return static_cast<quint64>(e * scale);
-}
-#elif defined(Q_OS_UNIX)
-#include <sys/time.h>
-quint64 Timer::now() {
-	struct timeval tv;
-	gettimeofday(&tv, NULL);
-	quint64 e= tv.tv_sec * 1000000LL;
-	e += tv.tv_usec;
-	return e;
-}
-#else
-quint64 Timer::now() {
-	static QTime ticker;
-	quint64 elapsed = ticker.elapsed();
-	return elapsed * 1000LL;
-}
 #endif
