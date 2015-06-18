@@ -43,18 +43,18 @@ class ShortcutDialog;
 class QSettings;
 
 struct Global Q_DECL_FINAL {
-private:
-  Q_DISABLE_COPY(Global)
-public:
-  static Global *g_global_struct;
-  ShortcutDialog *mw;
-  Settings s;
-  QSettings *qs;
-  QDir qdBasePath;
-  bool bQuit;
+  private:
+    Q_DISABLE_COPY(Global)
+  public:
+    static Global *g_global_struct;
+    ShortcutDialog *mw;
+    Settings s;
+    QSettings *qs;
+    QDir qdBasePath;
+    bool bQuit;
 
-  Global();
-  ~Global();
+    Global();
+    ~Global();
 };
 
 // -Wshadow is bugged. If an inline function of a class uses a variable or

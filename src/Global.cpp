@@ -33,47 +33,49 @@ Global *Global::g_global_struct;
 
 Global::Global() {
 
-	bQuit = false;
+  bQuit = false;
 
-	QStringList qsl;
-	// qsl << QCoreApplication::instance()->applicationDirPath();
-	qsl << QStandardPaths::writableLocation(QStandardPaths::DataLocation);
-	// QString appdata;
-	// wchar_t appData[MAX_PATH];
-	// if (SUCCEEDED(SHGetFolderPath(NULL, CSIDL_APPDATA, NULL, SHGFP_TYPE_CURRENT, appData))) {
-	// 	appdata = QDir::fromNativeSeparators(QString::fromWCharArray(appData));
-	//
-	// 	if (!appdata.isEmpty()) {
-	// 		appdata.append(QLatin1String("/Mumble"));
-	// 		qsl << appdata;
-	// 	}
-	// }
+  QStringList qsl;
+  // qsl << QCoreApplication::instance()->applicationDirPath();
+  qsl << QStandardPaths::writableLocation(QStandardPaths::DataLocation);
+  // QString appdata;
+  // wchar_t appData[MAX_PATH];
+  // if (SUCCEEDED(SHGetFolderPath(NULL, CSIDL_APPDATA, NULL, SHGFP_TYPE_CURRENT, appData))) {
+  //   appdata = QDir::fromNativeSeparators(QString::fromWCharArray(appData));
+  //
+  //   if (!appdata.isEmpty()) {
+  //     appdata.append(QLatin1String("/Mumble"));
+  //     qsl << appdata;
+  //   }
+  // }
   qs = NULL;
   mw = NULL;
 
-	foreach(const QString &dir, qsl) {
-		QFile inifile(QString::fromLatin1("%1/dinputkeydebug.ini").arg(dir));
-		if (inifile.exists() && inifile.permissions().testFlag(QFile::WriteUser)) {
-			qdBasePath = dir;
-			qs = new QSettings(inifile.fileName(), QSettings::IniFormat);
-			break;
-		}
-	}
+  foreach(const QString &dir, qsl) {
+    QFile inifile(QString::fromLatin1("%1/dinputkeydebug.ini").arg(dir));
+    if (inifile.exists() && inifile.permissions().testFlag(QFile::WriteUser)) {
+      qdBasePath = dir;
+      qs = new QSettings(inifile.fileName(), QSettings::IniFormat);
+      break;
+    }
+  }
 
-	if (!qs) {
-        qs = new QSettings();
-        // if (! appdata.isEmpty())
-        // 	qdBasePath.setPath(appdata);
-		if (! qdBasePath.exists()) {
-			QDir::root().mkpath(qdBasePath.absolutePath());
-			if (! qdBasePath.exists())
-				qdBasePath = QDir::home();
-		}
-	}
+  if (!qs) {
+    qs = new QSettings();
+    // if (! appdata.isEmpty()) {
+    //   qdBasePath.setPath(appdata);
+    // }
+    if (! qdBasePath.exists()) {
+      QDir::root().mkpath(qdBasePath.absolutePath());
+      if (! qdBasePath.exists()) {
+        qdBasePath = QDir::home();
+      }
+    }
+  }
 
-	qs->setIniCodec("UTF-8");
+  qs->setIniCodec("UTF-8");
 }
 
 Global::~Global() {
-	delete qs;
+  delete qs;
 }

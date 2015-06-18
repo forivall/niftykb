@@ -45,30 +45,30 @@
 #include "Timer.h"
 
 class GlobalShortcut : public QObject {
-		friend class GlobalShortcutEngine;
-		friend class GlobalShortcutConfig;
-	private:
-		Q_OBJECT
-		Q_DISABLE_COPY(GlobalShortcut)
-	protected:
-		QList<QVariant> qlActive;
-	signals:
-		void down(QVariant);
-		void triggered(bool, QVariant);
-	public:
-		QString qsToolTip;
-		QString qsWhatsThis;
-		QString name;
-		QVariant qvDefault;
-		bool bExpert;
-		int idx;
+    friend class GlobalShortcutEngine;
+    friend class GlobalShortcutConfig;
+  private:
+    Q_OBJECT
+    Q_DISABLE_COPY(GlobalShortcut)
+  protected:
+    QList<QVariant> qlActive;
+  signals:
+    void down(QVariant);
+    void triggered(bool, QVariant);
+  public:
+    QString qsToolTip;
+    QString qsWhatsThis;
+    QString name;
+    QVariant qvDefault;
+    bool bExpert;
+    int idx;
 
-		GlobalShortcut(QObject *parent, int index, QString qsName, bool expert = true, QVariant def = QVariant());
-		~GlobalShortcut() Q_DECL_OVERRIDE;
+    GlobalShortcut(QObject *parent, int index, QString qsName, bool expert = true, QVariant def = QVariant());
+    ~GlobalShortcut() Q_DECL_OVERRIDE;
 
-		bool active() const {
-			return ! qlActive.isEmpty();
-		}
+    bool active() const {
+      return ! qlActive.isEmpty();
+    }
 };
 
 /**
@@ -76,26 +76,26 @@ class GlobalShortcut : public QObject {
  * focus it will listen for a button combination until it looses focus.
  */
 class ShortcutKeyWidget : public QLineEdit {
-	private:
-		Q_OBJECT
-		Q_DISABLE_COPY(ShortcutKeyWidget)
-		Q_PROPERTY(QList<QVariant> shortcut READ getShortcut WRITE setShortcut USER true)
-	protected:
-		virtual void focusInEvent(QFocusEvent *event);
-		virtual void focusOutEvent(QFocusEvent *event);
-		virtual void mouseDoubleClickEvent(QMouseEvent *e);
-		virtual bool eventFilter(QObject *, QEvent *);
-	public:
-		QList<QVariant> qlButtons;
-		bool bModified;
-		ShortcutKeyWidget(QWidget *p = NULL);
-		QList<QVariant> getShortcut() const;
-		void displayKeys(bool last = true);
-	public slots:
-		void updateKeys(bool last);
-		void setShortcut(const QList<QVariant> &shortcut);
-	signals:
-		void keySet(bool, bool);
+  private:
+    Q_OBJECT
+    Q_DISABLE_COPY(ShortcutKeyWidget)
+    Q_PROPERTY(QList<QVariant> shortcut READ getShortcut WRITE setShortcut USER true)
+  protected:
+    virtual void focusInEvent(QFocusEvent *event);
+    virtual void focusOutEvent(QFocusEvent *event);
+    virtual void mouseDoubleClickEvent(QMouseEvent *e);
+    virtual bool eventFilter(QObject *, QEvent *);
+  public:
+    QList<QVariant> qlButtons;
+    bool bModified;
+    ShortcutKeyWidget(QWidget *p = NULL);
+    QList<QVariant> getShortcut() const;
+    void displayKeys(bool last = true);
+  public slots:
+    void updateKeys(bool last);
+    void setShortcut(const QList<QVariant> &shortcut);
+  signals:
+    void keySet(bool, bool);
 };
 
 /**
@@ -105,33 +105,33 @@ class ShortcutKeyWidget : public QLineEdit {
  * @see GlobalShortcutEngine
  */
 class ShortcutActionWidget : public QComboBox {
-	private:
-		Q_OBJECT
-		Q_DISABLE_COPY(ShortcutActionWidget)
-		Q_PROPERTY(unsigned int index READ index WRITE setIndex USER true)
-	public:
-		ShortcutActionWidget(QWidget *p = NULL);
-		unsigned int index() const;
-		void setIndex(int);
+  private:
+    Q_OBJECT
+    Q_DISABLE_COPY(ShortcutActionWidget)
+    Q_PROPERTY(unsigned int index READ index WRITE setIndex USER true)
+  public:
+    ShortcutActionWidget(QWidget *p = NULL);
+    unsigned int index() const;
+    void setIndex(int);
 };
 
 class ShortcutToggleWidget : public QComboBox {
-	private:
-		Q_OBJECT
-		Q_DISABLE_COPY(ShortcutToggleWidget)
-		Q_PROPERTY(int index READ index WRITE setIndex USER true)
-	public:
-		ShortcutToggleWidget(QWidget *p = NULL);
-		int index() const;
-		void setIndex(int);
+  private:
+    Q_OBJECT
+    Q_DISABLE_COPY(ShortcutToggleWidget)
+    Q_PROPERTY(int index READ index WRITE setIndex USER true)
+  public:
+    ShortcutToggleWidget(QWidget *p = NULL);
+    int index() const;
+    void setIndex(int);
 };
 
 enum ShortcutTargetTypes {
-	SHORTCUT_TARGET_ROOT = -1,
-	SHORTCUT_TARGET_PARENT = -2,
-	SHORTCUT_TARGET_CURRENT = -3,
-	SHORTCUT_TARGET_SUBCHANNEL = -4,
-	SHORTCUT_TARGET_PARENT_SUBCHANNEL = -12
+  SHORTCUT_TARGET_ROOT = -1,
+  SHORTCUT_TARGET_PARENT = -2,
+  SHORTCUT_TARGET_CURRENT = -3,
+  SHORTCUT_TARGET_SUBCHANNEL = -4,
+  SHORTCUT_TARGET_PARENT_SUBCHANNEL = -12
 };
 
 /**
@@ -145,18 +145,18 @@ enum ShortcutTargetTypes {
  * @see ShortcutTargetWidget
  */
 class ShortcutDelegate : public QStyledItemDelegate {
-		Q_OBJECT
-		Q_DISABLE_COPY(ShortcutDelegate)
-	public:
-		ShortcutDelegate(QObject *);
-		~ShortcutDelegate() Q_DECL_OVERRIDE;
-		QString displayText(const QVariant &, const QLocale &) const Q_DECL_OVERRIDE;
+    Q_OBJECT
+    Q_DISABLE_COPY(ShortcutDelegate)
+  public:
+    ShortcutDelegate(QObject *);
+    ~ShortcutDelegate() Q_DECL_OVERRIDE;
+    QString displayText(const QVariant &, const QLocale &) const Q_DECL_OVERRIDE;
 };
 
 struct ShortcutKey {
-	Shortcut s;
-	int iNumUp;
-	GlobalShortcut *gs;
+  Shortcut s;
+  int iNumUp;
+  GlobalShortcut *gs;
 };
 
 /**
@@ -169,45 +169,45 @@ struct ShortcutKey {
  * @see GlobalShortcutWin
  */
 class GlobalShortcutEngine : public QThread {
-	private:
-		Q_OBJECT
-		Q_DISABLE_COPY(GlobalShortcutEngine)
-	public:
-		bool bNeedRemap;
-		Timer tReset;
+  private:
+    Q_OBJECT
+    Q_DISABLE_COPY(GlobalShortcutEngine)
+  public:
+    bool bNeedRemap;
+    Timer tReset;
 
-		static GlobalShortcutEngine *engine;
-		static GlobalShortcutEngine *platformInit();
+    static GlobalShortcutEngine *engine;
+    static GlobalShortcutEngine *platformInit();
 
-		QHash<int, GlobalShortcut *> qmShortcuts;
-		QList<QVariant> qlActiveButtons;
-		QList<QVariant> qlDownButtons;
-		QList<QVariant> qlSuppressed;
+    QHash<int, GlobalShortcut *> qmShortcuts;
+    QList<QVariant> qlActiveButtons;
+    QList<QVariant> qlDownButtons;
+    QList<QVariant> qlSuppressed;
 
-		QList<QVariant> qlButtonList;
-		QList<QList<ShortcutKey *> > qlShortcutList;
+    QList<QVariant> qlButtonList;
+    QList<QList<ShortcutKey *> > qlShortcutList;
 
-		GlobalShortcutEngine(QObject *p = NULL);
-		~GlobalShortcutEngine() Q_DECL_OVERRIDE;
-		void resetMap();
-		void remap();
-		virtual void needRemap();
-		void run();
+    GlobalShortcutEngine(QObject *p = NULL);
+    ~GlobalShortcutEngine() Q_DECL_OVERRIDE;
+    void resetMap();
+    void remap();
+    virtual void needRemap();
+    void run();
 
-		bool handleButton(const QVariant &, bool);
-		static void add(GlobalShortcut *);
-		static void remove(GlobalShortcut *);
-		static QString buttonText(const QList<QVariant> &);
-		virtual QString buttonName(const QVariant &) = 0;
-		virtual bool canSuppress();
+    bool handleButton(const QVariant &, bool);
+    static void add(GlobalShortcut *);
+    static void remove(GlobalShortcut *);
+    static QString buttonText(const QList<QVariant> &);
+    virtual QString buttonName(const QVariant &) = 0;
+    virtual bool canSuppress();
 
-		virtual void setEnabled(bool b);
-		virtual bool enabled();
-		virtual bool canDisable();
+    virtual void setEnabled(bool b);
+    virtual bool enabled();
+    virtual bool canDisable();
 
-		virtual void prepareInput();
-	signals:
-		void buttonPressed(bool last);
+    virtual void prepareInput();
+  signals:
+    void buttonPressed(bool last);
 };
 
 #endif

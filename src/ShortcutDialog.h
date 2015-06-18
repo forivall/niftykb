@@ -13,11 +13,11 @@
 
 class ShortcutDialog : public QDialog, public Ui::ShortcutDialog
 {
-private:
+  private:
     Q_OBJECT
-protected:
+  protected:
     QTreeWidgetItem *itemForShortcut(const Shortcut &) const;
-public:
+  public:
     explicit ShortcutDialog(QWidget *parent = 0);
 
     QList<Shortcut> qlShortcuts;
@@ -27,7 +27,7 @@ public:
     bool nativeEvent(const QByteArray &, void *, long *);
 
     ~ShortcutDialog();
-public slots:
+  public slots:
     void accept() const;
     void save() const;
     void load(const Settings &r);
@@ -37,7 +37,7 @@ public slots:
     void on_qpbRemove_clicked(bool);
     void on_qtwShortcuts_currentItemChanged(QTreeWidgetItem *, QTreeWidgetItem *);
     void on_qtwShortcuts_itemChanged(QTreeWidgetItem *, int);
-private:
+  private:
 };
 
 #endif // SHORTCUTDIALOG_H

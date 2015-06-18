@@ -51,28 +51,28 @@
 // GUI.
 
 struct Shortcut {
-	int iIndex;
-	QList<QVariant> qlButtons;
-	QVariant qvData;
-	bool bSuppress;
-	bool operator <(const Shortcut &) const;
-	bool isServerSpecific() const;
-	bool operator ==(const Shortcut &) const;
+  int iIndex;
+  QList<QVariant> qlButtons;
+  QVariant qvData;
+  bool bSuppress;
+  bool operator <(const Shortcut &) const;
+  bool isServerSpecific() const;
+  bool operator ==(const Shortcut &) const;
 };
 
 struct ShortcutTarget {
-	bool bUsers;
-	QStringList qlUsers;
-	QList<unsigned int> qlSessions;
-	int iChannel;
-	QString qsGroup;
-	bool bLinks;
-	bool bChildren;
-	bool bForceCenter;
-	ShortcutTarget();
-	bool isServerSpecific() const;
-	bool operator <(const ShortcutTarget &) const;
-	bool operator ==(const ShortcutTarget &) const;
+  bool bUsers;
+  QStringList qlUsers;
+  QList<unsigned int> qlSessions;
+  int iChannel;
+  QString qsGroup;
+  bool bLinks;
+  bool bChildren;
+  bool bForceCenter;
+  ShortcutTarget();
+  bool isServerSpecific() const;
+  bool operator <(const ShortcutTarget &) const;
+  bool operator ==(const ShortcutTarget &) const;
 };
 
 quint32 qHash(const ShortcutTarget &);
@@ -83,20 +83,20 @@ QDataStream &operator>>(QDataStream &, ShortcutTarget &);
 Q_DECLARE_METATYPE(ShortcutTarget)
 
 struct Settings {
-	bool bAskOnQuit;
-	bool bHideInTray;
-    bool bStateInTray;
+  bool bAskOnQuit;
+  bool bHideInTray;
+  bool bStateInTray;
 
-    bool bShortcutEnable;
-    QList<Shortcut> qlShortcuts;
+  bool bShortcutEnable;
+  QList<Shortcut> qlShortcuts;
 
-    // Config updates
-    unsigned int uiUpdateCounter;
+  // Config updates
+  unsigned int uiUpdateCounter;
 
-	Settings();
-	void load();
-	void load(QSettings*);
-	void save();
+  Settings();
+  void load();
+  void load(QSettings*);
+  void save();
 };
 
 #endif

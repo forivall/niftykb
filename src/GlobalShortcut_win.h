@@ -42,53 +42,53 @@
 typedef QPair<GUID, DWORD> qpButton;
 
 struct InputDevice {
-	LPDIRECTINPUTDEVICE8 pDID;
-	GUID guid;
-	QVariant vguid;
-	QString name;
+  LPDIRECTINPUTDEVICE8 pDID;
+  GUID guid;
+  QVariant vguid;
+  QString name;
 
-	// dwType to name
-	QHash<DWORD, QString> qhNames;
+  // dwType to name
+  QHash<DWORD, QString> qhNames;
 
-	// Map dwType to dwOfs in our structure
-	QHash<DWORD, DWORD> qhTypeToOfs;
+  // Map dwType to dwOfs in our structure
+  QHash<DWORD, DWORD> qhTypeToOfs;
 
-	// Map dwOfs in our structure to dwType
-	QHash<DWORD, DWORD> qhOfsToType;
+  // Map dwOfs in our structure to dwType
+  QHash<DWORD, DWORD> qhOfsToType;
 
-	// Buttons active since last reset
-	QSet<DWORD> activeMap;
+  // Buttons active since last reset
+  QSet<DWORD> activeMap;
 };
 
 class GlobalShortcutWin : public GlobalShortcutEngine {
-	private:
-		Q_OBJECT
-		Q_DISABLE_COPY(GlobalShortcutWin)
-	public:
-		BYTE ucKeyState[256];
-		LPDIRECTINPUT8 pDI;
-		QHash<GUID, InputDevice *> qhInputDevices;
-		HHOOK hhMouse, hhKeyboard;
-		unsigned int uiHardwareDevices;
-		Timer tDoubleClick;
-		bool bHook;
-		static BOOL CALLBACK EnumSuitableDevicesCB(LPCDIDEVICEINSTANCE, LPDIRECTINPUTDEVICE8, DWORD, DWORD, LPVOID);
-		static BOOL CALLBACK EnumDevicesCB(LPCDIDEVICEINSTANCE, LPVOID);
-		static BOOL CALLBACK EnumDeviceObjectsCallback(LPCDIDEVICEOBJECTINSTANCE lpddoi, LPVOID pvRef);
-		static LRESULT CALLBACK HookKeyboard(int, WPARAM, LPARAM);
-		static LRESULT CALLBACK HookMouse(int, WPARAM, LPARAM);
+  private:
+    Q_OBJECT
+    Q_DISABLE_COPY(GlobalShortcutWin)
+  public:
+    BYTE ucKeyState[256];
+    LPDIRECTINPUT8 pDI;
+    QHash<GUID, InputDevice *> qhInputDevices;
+    HHOOK hhMouse, hhKeyboard;
+    unsigned int uiHardwareDevices;
+    Timer tDoubleClick;
+    bool bHook;
+    static BOOL CALLBACK EnumSuitableDevicesCB(LPCDIDEVICEINSTANCE, LPDIRECTINPUTDEVICE8, DWORD, DWORD, LPVOID);
+    static BOOL CALLBACK EnumDevicesCB(LPCDIDEVICEINSTANCE, LPVOID);
+    static BOOL CALLBACK EnumDeviceObjectsCallback(LPCDIDEVICEOBJECTINSTANCE lpddoi, LPVOID pvRef);
+    static LRESULT CALLBACK HookKeyboard(int, WPARAM, LPARAM);
+    static LRESULT CALLBACK HookMouse(int, WPARAM, LPARAM);
 
-		virtual bool canSuppress() Q_DECL_OVERRIDE;
-		void run() Q_DECL_OVERRIDE;
-	public slots:
-		void timeTicked();
-	public:
-		GlobalShortcutWin();
-		~GlobalShortcutWin() Q_DECL_OVERRIDE;
-		void unacquire();
-		QString buttonName(const QVariant &) Q_DECL_OVERRIDE;
+    virtual bool canSuppress() Q_DECL_OVERRIDE;
+    void run() Q_DECL_OVERRIDE;
+  public slots:
+    void timeTicked();
+  public:
+    GlobalShortcutWin();
+    ~GlobalShortcutWin() Q_DECL_OVERRIDE;
+    void unacquire();
+    QString buttonName(const QVariant &) Q_DECL_OVERRIDE;
 
-		virtual void prepareInput() Q_DECL_OVERRIDE;
+    virtual void prepareInput() Q_DECL_OVERRIDE;
 };
 
 uint qHash(const GUID &);

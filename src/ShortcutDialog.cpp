@@ -2,26 +2,26 @@
 #include "ui_ShortcutDialog.h"
 
 ShortcutDialog::ShortcutDialog(QWidget *parent) :
-    QDialog(parent)
+  QDialog(parent)
 {
-    setupUi(this);
+  setupUi(this);
 
-    installEventFilter(this);
+  installEventFilter(this);
 
-    uiNewHardware = 0;
+  uiNewHardware = 0;
 
-    bool canSuppress = GlobalShortcutEngine::engine->canSuppress();
-    bool canDisable = GlobalShortcutEngine::engine->canDisable();
+  bool canSuppress = GlobalShortcutEngine::engine->canSuppress();
+  bool canDisable = GlobalShortcutEngine::engine->canDisable();
 
-    qtwShortcuts->setColumnCount(canSuppress ? 4 : 3);
-    qtwShortcuts->setItemDelegate(new ShortcutDelegate(qtwShortcuts));
+  qtwShortcuts->setColumnCount(canSuppress ? 4 : 3);
+  qtwShortcuts->setItemDelegate(new ShortcutDelegate(qtwShortcuts));
 
-    qtwShortcuts->header()->setSectionResizeMode(0, QHeaderView::Fixed);
-    qtwShortcuts->header()->resizeSection(0, 150);
-    qtwShortcuts->header()->setSectionResizeMode(2, QHeaderView::Stretch);
-    if (canSuppress){
-      qtwShortcuts->header()->setSectionResizeMode(3, QHeaderView::ResizeToContents);
-    }
+  qtwShortcuts->header()->setSectionResizeMode(0, QHeaderView::Fixed);
+  qtwShortcuts->header()->resizeSection(0, 150);
+  qtwShortcuts->header()->setSectionResizeMode(2, QHeaderView::Stretch);
+  if (canSuppress){
+    qtwShortcuts->header()->setSectionResizeMode(3, QHeaderView::ResizeToContents);
+  }
 }
 
 ShortcutDialog::~ShortcutDialog()
@@ -35,59 +35,60 @@ void ShortcutDialog::commit() {
 }
 
 void ShortcutDialog::on_qpbAdd_clicked(bool) {
-    commit();
-    Shortcut sc;
-    sc.iIndex = -1;
-    sc.bSuppress = false;
-    qlShortcuts << sc;
-    reload();
+  commit();
+  Shortcut sc;
+  sc.iIndex = -1;
+  sc.bSuppress = false;
+  qlShortcuts << sc;
+  reload();
 }
 
 void ShortcutDialog::on_qpbRemove_clicked(bool) {
-    commit();
-    QTreeWidgetItem *qtwi = qtwShortcuts->currentItem();
-    if (! qtwi)
-        return;
-    int idx = qtwShortcuts->indexOfTopLevelItem(qtwi);
-    delete qtwi;
-    qlShortcuts.removeAt(idx);
+  commit();
+  QTreeWidgetItem *qtwi = qtwShortcuts->currentItem();
+  if (! qtwi) {
+    return;
+  }
+  int idx = qtwShortcuts->indexOfTopLevelItem(qtwi);
+  delete qtwi;
+  qlShortcuts.removeAt(idx);
 }
 
 void ShortcutDialog::on_qtwShortcuts_currentItemChanged(QTreeWidgetItem *item, QTreeWidgetItem *) {
-    qpbRemove->setEnabled(item ? true : false);
+  qpbRemove->setEnabled(item ? true : false);
 }
 
 void ShortcutDialog::on_qtwShortcuts_itemChanged(QTreeWidgetItem *item, int) {
-    int idx = qtwShortcuts->indexOfTopLevelItem(item);
+  int idx = qtwShortcuts->indexOfTopLevelItem(item);
 
-    Shortcut &sc = qlShortcuts[idx];
-    sc.iIndex = item->data(0, Qt::DisplayRole).toInt();
-    sc.qvData = item->data(1, Qt::DisplayRole);
-    sc.qlButtons = item->data(2, Qt::DisplayRole).toList();
-    sc.bSuppress = item->checkState(3) == Qt::Checked;
+  Shortcut &sc = qlShortcuts[idx];
+  sc.iIndex = item->data(0, Qt::DisplayRole).toInt();
+  sc.qvData = item->data(1, Qt::DisplayRole);
+  sc.qlButtons = item->data(2, Qt::DisplayRole).toList();
+  sc.bSuppress = item->checkState(3) == Qt::Checked;
 
-    const ::GlobalShortcut *gs = GlobalShortcutEngine::engine->qmShortcuts.value(sc.iIndex);
-    if (gs && sc.qvData.type() != gs->qvDefault.type()) {
-        item->setData(1, Qt::DisplayRole, gs->qvDefault);
-    }
+  const ::GlobalShortcut *gs = GlobalShortcutEngine::engine->qmShortcuts.value(sc.iIndex);
+  if (gs && sc.qvData.type() != gs->qvDefault.type()) {
+    item->setData(1, Qt::DisplayRole, gs->qvDefault);
+  }
 }
 
 QString ShortcutDialog::title() const {
-    return tr("Shortcuts");
+  return tr("Shortcuts");
 }
 
-//QIcon ShortcutDialog::icon() const {
-//    return QIcon(QLatin1String("skin:config_shortcuts.png"));
-//}
+// QIcon ShortcutDialog::icon() const {
+//   return QIcon(QLatin1String("skin:config_shortcuts.png"));
+// }
 
 void ShortcutDialog::load(const Settings &r) {
-    qlShortcuts = r.qlShortcuts;
+  qlShortcuts = r.qlShortcuts;
 
-    reload();
+  reload();
 }
 
 void ShortcutDialog::save() const {
-//    g.s.qlShortcuts = qlShortcuts;
+  // g.s.qlShortcuts = qlShortcuts;
 }
 
 QTreeWidgetItem *ShortcutDialog::itemForShortcut(const Shortcut &sc) const {
@@ -95,20 +96,23 @@ QTreeWidgetItem *ShortcutDialog::itemForShortcut(const Shortcut &sc) const {
     ::GlobalShortcut *gs = GlobalShortcutEngine::engine->qmShortcuts.value(sc.iIndex);
 
     item->setData(0, Qt::DisplayRole, static_cast<unsigned int>(sc.iIndex));
-    if (sc.qvData.isValid() && gs && (sc.qvData.type() == gs->qvDefault.type()))
-        item->setData(1, Qt::DisplayRole, sc.qvData);
-    else if (gs)
-        item->setData(1, Qt::DisplayRole, gs->qvDefault);
+    if (sc.qvData.isValid() && gs && (sc.qvData.type() == gs->qvDefault.type())) {
+      item->setData(1, Qt::DisplayRole, sc.qvData);
+    } else if (gs) {
+      item->setData(1, Qt::DisplayRole, gs->qvDefault);
+    }
     item->setData(2, Qt::DisplayRole, sc.qlButtons);
     item->setCheckState(3, sc.bSuppress ? Qt::Checked : Qt::Unchecked);
     item->setFlags(item->flags() | Qt::ItemIsEditable);
 
 
     if (gs) {
-        if (! gs->qsToolTip.isEmpty())
-            item->setData(0, Qt::ToolTipRole, gs->qsToolTip);
-        if (! gs->qsWhatsThis.isEmpty())
-            item->setData(0, Qt::WhatsThisRole, gs->qsWhatsThis);
+      if (! gs->qsToolTip.isEmpty()) {
+        item->setData(0, Qt::ToolTipRole, gs->qsToolTip);
+      }
+      if (! gs->qsWhatsThis.isEmpty()) {
+        item->setData(0, Qt::WhatsThisRole, gs->qsWhatsThis);
+      }
     }
 
     item->setData(2, Qt::ToolTipRole, tr("Shortcut button combination."));
@@ -125,25 +129,26 @@ QTreeWidgetItem *ShortcutDialog::itemForShortcut(const Shortcut &sc) const {
 }
 
 void ShortcutDialog::reload() {
-    qStableSort(qlShortcuts);
-    qtwShortcuts->clear();
-    foreach(const Shortcut &sc, qlShortcuts) {
-        QTreeWidgetItem *item = itemForShortcut(sc);
-        ::GlobalShortcut *gs = GlobalShortcutEngine::engine->qmShortcuts.value(sc.iIndex);
-        qtwShortcuts->addTopLevelItem(item);
-    }
+  qStableSort(qlShortcuts);
+  qtwShortcuts->clear();
+  foreach(const Shortcut &sc, qlShortcuts) {
+    QTreeWidgetItem *item = itemForShortcut(sc);
+    ::GlobalShortcut *gs = GlobalShortcutEngine::engine->qmShortcuts.value(sc.iIndex);
+    qtwShortcuts->addTopLevelItem(item);
+  }
 }
 
 void ShortcutDialog::accept() const {
-    GlobalShortcutEngine::engine->bNeedRemap = true;
-    GlobalShortcutEngine::engine->needRemap();
-    GlobalShortcutEngine::engine->setEnabled(g.s.bShortcutEnable);
+  GlobalShortcutEngine::engine->bNeedRemap = true;
+  GlobalShortcutEngine::engine->needRemap();
+  GlobalShortcutEngine::engine->setEnabled(g.s.bShortcutEnable);
 }
 
 bool ShortcutDialog::nativeEvent(const QByteArray &, void *message, long *) {
-	MSG *msg = reinterpret_cast<MSG *>(message);
-	if (msg->message == WM_DEVICECHANGE && msg->wParam == DBT_DEVNODES_CHANGED)
-		uiNewHardware++;
+  MSG *msg = reinterpret_cast<MSG *>(message);
+  if (msg->message == WM_DEVICECHANGE && msg->wParam == DBT_DEVNODES_CHANGED) {
+    uiNewHardware++;
+  }
 
-	return false;
+  return false;
 }
