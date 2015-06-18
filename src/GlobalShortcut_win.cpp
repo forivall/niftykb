@@ -41,8 +41,9 @@ extern HWND MumbleHWNDForQWidget(QWidget *w);
 
 static uint qHash(const GUID &a) {
   uint val = a.Data1 ^ a.Data2 ^ a.Data3;
-  for (int i=0;i<8;i++)
+  for (int i=0;i<8;i++) {
     val += a.Data4[i];
+  }
   return val;
 }
 
