@@ -34,14 +34,8 @@
 
 #include <QtCore/QVariant>
 #include <QtCore/QList>
-#include <QtCore/QPair>
-#include <QtCore/QRectF>
 #include <QtCore/QSettings>
 #include <QtCore/QStringList>
-#include <QtGui/QColor>
-#include <QtGui/QFont>
-#include <QtNetwork/QSslCertificate>
-#include <QtNetwork/QSslKey>
 
 // Global helper classes to spread variables around across threads
 // especially helpful to initialize things like the stored

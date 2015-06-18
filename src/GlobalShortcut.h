@@ -126,14 +126,6 @@ class ShortcutToggleWidget : public QComboBox {
     void setIndex(int);
 };
 
-enum ShortcutTargetTypes {
-  SHORTCUT_TARGET_ROOT = -1,
-  SHORTCUT_TARGET_PARENT = -2,
-  SHORTCUT_TARGET_CURRENT = -3,
-  SHORTCUT_TARGET_SUBCHANNEL = -4,
-  SHORTCUT_TARGET_PARENT_SUBCHANNEL = -12
-};
-
 /**
  * Used to get custom display and edit behaviour for the model used in GlobalShortcutConfig::qtwShortcuts.
  * It registers custom handlers which link specific types to custom ShortcutXWidget editors and also
