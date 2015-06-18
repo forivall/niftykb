@@ -19,8 +19,9 @@ ShortcutDialog::ShortcutDialog(QWidget *parent) :
     qtwShortcuts->header()->setSectionResizeMode(0, QHeaderView::Fixed);
     qtwShortcuts->header()->resizeSection(0, 150);
     qtwShortcuts->header()->setSectionResizeMode(2, QHeaderView::Stretch);
-    if (canSuppress)
-        qtwShortcuts->header()->setSectionResizeMode(3, QHeaderView::ResizeToContents);
+    if (canSuppress){
+      qtwShortcuts->header()->setSectionResizeMode(3, QHeaderView::ResizeToContents);
+    }
 }
 
 ShortcutDialog::~ShortcutDialog()

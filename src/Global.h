@@ -50,7 +50,6 @@ public:
   ShortcutDialog *mw;
   Settings s;
   QSettings *qs;
-  unsigned int uiSession;
   QDir qdBasePath;
   bool bQuit;
 

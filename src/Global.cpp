@@ -32,7 +32,6 @@
 Global *Global::g_global_struct;
 
 Global::Global() {
-    uiSession = 0;
 
 	bQuit = false;
 
@@ -49,9 +48,11 @@ Global::Global() {
 	// 		qsl << appdata;
 	// 	}
 	// }
+  qs = NULL;
+  mw = NULL;
 
 	foreach(const QString &dir, qsl) {
-		QFile inifile(QString::fromLatin1("%1/mumble.ini").arg(dir));
+		QFile inifile(QString::fromLatin1("%1/dinputkeydebug.ini").arg(dir));
 		if (inifile.exists() && inifile.permissions().testFlag(QFile::WriteUser)) {
 			qdBasePath = dir;
 			qs = new QSettings(inifile.fileName(), QSettings::IniFormat);
@@ -69,11 +70,6 @@ Global::Global() {
 				qdBasePath = QDir::home();
 		}
 	}
-
-	if (! qdBasePath.exists(QLatin1String("Plugins")))
-		qdBasePath.mkpath(QLatin1String("Plugins"));
-	if (! qdBasePath.exists(QLatin1String("Overlay")))
-		qdBasePath.mkpath(QLatin1String("Overlay"));
 
 	qs->setIniCodec("UTF-8");
 }
