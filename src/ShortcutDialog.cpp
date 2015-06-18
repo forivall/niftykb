@@ -131,13 +131,6 @@ void ShortcutDialog::reload() {
         ::GlobalShortcut *gs = GlobalShortcutEngine::engine->qmShortcuts.value(sc.iIndex);
         qtwShortcuts->addTopLevelItem(item);
     }
-#ifdef Q_OS_MAC
-    if (! g.s.bSuppressMacEventTapWarning) {
-        qwWarningContainer->setVisible(showWarning());
-    } else {
-        qwWarningContainer->setVisible(false);
-    }
-#endif
 }
 
 void ShortcutDialog::accept() const {

@@ -5,6 +5,8 @@ set(CMAKE_AUTOMOC ON)
 
 # Find the QtWidgets library
 find_package(Qt5Core)
+find_package(Qt5Gui)
+include_directories(${Qt5Gui_PRIVATE_INCLUDE_DIRS})
 find_package(Qt5Widgets REQUIRED)
 find_package(DirectX REQUIRED)
 qt5_wrap_ui(UI_HEADERS ShortcutDialog.ui)
@@ -18,7 +20,7 @@ add_executable(
   dinputkeydebug WIN32 main.cpp
   ShortcutDialog.cpp
   GlobalShortcut.cpp
-  GlobalShortcut_win.cpp
+  GlobalShortcut_win.cpp os_win.cpp
   Timer.cpp Settings.cpp Global.cpp
   ${UI_HEADERS}
 )

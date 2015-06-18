@@ -33,13 +33,10 @@ public slots:
     void load(const Settings &r);
     void reload();
     void commit();
-    void on_qcbEnableGlobalShortcuts_stateChanged(int);
     void on_qpbAdd_clicked(bool);
     void on_qpbRemove_clicked(bool);
     void on_qtwShortcuts_currentItemChanged(QTreeWidgetItem *, QTreeWidgetItem *);
     void on_qtwShortcuts_itemChanged(QTreeWidgetItem *, int);
-    void on_qpbOpenAccessibilityPrefs_clicked();
-    void on_qpbSkipWarning_clicked();
 private:
 };
 
