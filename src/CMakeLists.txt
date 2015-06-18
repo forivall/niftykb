@@ -6,8 +6,13 @@ set(CMAKE_AUTOMOC ON)
 # Find the QtWidgets library
 find_package(Qt5Core)
 find_package(Qt5Widgets REQUIRED)
-find_package(DX_DInput)
+find_package(DirectX REQUIRED)
 qt5_wrap_ui(UI_HEADERS ShortcutDialog.ui)
+
+include_directories(
+  ${DIRECTX_INCLUDE_DIR}
+)
+
 # Tell CMake to create the helloworld executable
 add_executable(
   dinputkeydebug WIN32 main.cpp
@@ -19,4 +24,4 @@ add_executable(
 )
 
 # Use the Widgets module from Qt 5.
-target_link_libraries(dinputkeydebug Qt5::Widgets)
+target_link_libraries(dinputkeydebug Qt5::Widgets ${DIRECTX_LIBRARY_input} ${DIRECTX_LIBRARY_guid})
