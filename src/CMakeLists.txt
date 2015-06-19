@@ -17,7 +17,7 @@ include_directories(
 
 # Tell CMake to create the helloworld executable
 add_executable(
-  dinputkeydebug WIN32 main.cpp
+  nilpostman WIN32 main.cpp
   ShortcutDialog.cpp
   GlobalShortcut.cpp
   GlobalShortcut_win.cpp os_win.cpp
@@ -26,4 +26,4 @@ add_executable(
 )
 
 # Use the Widgets module from Qt 5.
-target_link_libraries(dinputkeydebug Qt5::Widgets ${DIRECTX_LIBRARY_input} ${DIRECTX_LIBRARY_guid})
+target_link_libraries(nilpostman Qt5::Widgets ${DIRECTX_LIBRARY_input} ${DIRECTX_LIBRARY_guid})

@@ -1,5 +1,5 @@
-#ifndef DINPUTKEYDEBUG_COMMON_H_
-#define DINPUTKEYDEBUG_COMMON_H_
+#ifndef NILPOSTMAN_COMMON_H_
+#define NILPOSTMAN_COMMON_H_
 
 #include <QtCore/QStandardPaths>
 #include <QtCore>
