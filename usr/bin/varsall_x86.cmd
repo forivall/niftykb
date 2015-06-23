@@ -1,4 +1,5 @@
 set CMAKE_PREFIX_PATH=%SYSTEMDRIVE%\Qt\5.4\msvc2013;%CMAKE_PREFIX_PATH%
+set DXSDK_DIR="E:\Programs\Microsoft DirectX SDK (June 2010)\"
 set OWD=%CD%
 call "%SYSTEMDRIVE%\Qt\5.4\msvc2013\bin\qtenv2.bat"
 cd /D %OWD%

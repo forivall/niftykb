@@ -15,13 +15,13 @@
       "cwd": "{PROJECT_PATH}\\build-x86-debug"
     },
     "nmake x64-debug": {
-      "cmd": "{PROJECT_PATH}\\usr\\bin\\env_x86_debug.cmd",
+      "cmd": "{PROJECT_PATH}\\usr\\bin\\env_x64_debug.cmd",
       "args": ["jom"],
       "sh": false,
       "cwd": "{PROJECT_PATH}\\build-x64-debug"
     },
     "cmake x64-debug": {
-      "cmd": "{PROJECT_PATH}\\usr\\bin\\env_x86_debug.cmd",
+      "cmd": "{PROJECT_PATH}\\usr\\bin\\env_x64_debug.cmd",
       "args": ["cmake", "-G", "NMake Makefiles", ".."],
       "sh": false,
       "cwd": "{PROJECT_PATH}\\build-x64-debug"
