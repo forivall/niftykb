@@ -55,6 +55,7 @@ Global::Global() {
 
   foreach(const QString &dir, qsl) {
     QFile inifile(QString::fromLatin1("%1/nilpostman.ini").arg(dir));
+    qWarning("testing settings file: %s %s", qPrintable(inifile.fileName()), qPrintable(dir));
     if (inifile.exists() && inifile.permissions().testFlag(QFile::WriteUser)) {
       qdBasePath = dir;
       qs = new QSettings(inifile.fileName(), QSettings::IniFormat);
@@ -65,8 +66,10 @@ Global::Global() {
   if (!qs) {
     if (! appdata.isEmpty()) {
       qdBasePath.setPath(appdata);
+      qWarning("testing appdata path: %s %s", qPrintable(appdata), qPrintable(qdBasePath.path()));
     }
     qs = new QSettings(QString::fromLatin1("%1/nilpostman.ini").arg(qdBasePath.path()), QSettings::IniFormat);
+    qWarning("creating settings file: %s", qPrintable(qs->fileName()));
     qdBasePath = QStandardPaths::writableLocation(QStandardPaths::DataLocation);
     if (! qdBasePath.exists()) {
       QDir::root().mkpath(qdBasePath.absolutePath());
