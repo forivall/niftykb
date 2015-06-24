@@ -31,14 +31,8 @@
 
 Global *Global::g_global_struct;
 
-Global::Global() {
-
-  bQuit = false;
-
-  QStringList qsl;
-  qsl << QCoreApplication::instance()->applicationDirPath();
+QString findAppData(QStringList &qsl) {
   QString appdata;
-  // wchar_t appDataWchar[MAX_PATH];
   char appDataWchar[MAX_PATH];
   if (SUCCEEDED(SHGetFolderPath(NULL, CSIDL_APPDATA, NULL, SHGFP_TYPE_CURRENT, appDataWchar))) {
     appdata = QDir::fromNativeSeparators(QString::fromUtf8(appDataWchar));
@@ -48,25 +42,25 @@ Global::Global() {
       qsl << appdata;
     }
   }
-  qsl << QStandardPaths::writableLocation(QStandardPaths::DataLocation);
+  return appdata;
+}
 
-  qs = NULL;
-  mw = NULL;
-
-  foreach(const QString &dir, qsl) {
+QString findExistingSettingsDir(const QStringList &locations) {
+  foreach(const QString &dir, locations) {
     QFile inifile(QString::fromLatin1("%1/nilpostman.ini").arg(dir));
     if (inifile.exists() && inifile.permissions().testFlag(QFile::WriteUser)) {
-      qdBasePath = dir;
-      qs = new QSettings(inifile.fileName(), QSettings::IniFormat);
-      break;
+      return dir;
     }
   }
+  return QString();
+}
 
-  if (!qs) {
-    if (! appdata.isEmpty()) {
-      qdBasePath.setPath(appdata);
-    }
-    qs = new QSettings(QString::fromLatin1("%1/nilpostman.ini").arg(qdBasePath.path()), QSettings::IniFormat);
+QDir findWritableBasePath(const QString &appdata) {
+  QDir qdBasePath;
+  if (! appdata.isEmpty()) {
+    qdBasePath.setPath(appdata);
+  }
+  if (! qdBasePath.exists()) {
     qdBasePath = QStandardPaths::writableLocation(QStandardPaths::DataLocation);
     if (! qdBasePath.exists()) {
       QDir::root().mkpath(qdBasePath.absolutePath());
@@ -74,6 +68,32 @@ Global::Global() {
         qdBasePath = QDir::home();
       }
     }
+  }
+  return qdBasePath;
+}
+
+Global::Global() {
+
+  bQuit = false;
+
+  QStringList settingsLocations;
+  settingsLocations << QCoreApplication::instance()->applicationDirPath();
+  QString appdata = findAppData(settingsLocations);
+  settingsLocations << QStandardPaths::writableLocation(QStandardPaths::DataLocation);
+
+  qs = NULL;
+  mw = NULL;
+
+  // NOTE: could be cleaned up more, but it's much more readable now.
+  QString dir = findExistingSettingsDir(settingsLocations);
+  if (!dir.isEmpty()) {
+    qdBasePath = dir;
+    qs = new QSettings(QString::fromLatin1("%1/nilpostman.ini").arg(dir), QSettings::IniFormat);
+  }
+
+  if (!qs) {
+    qdBasePath = findWritableBasePath(appdata);
+    qs = new QSettings(QString::fromLatin1("%1/nilpostman.ini").arg(qdBasePath.path()), QSettings::IniFormat);
   }
 
   qs->setIniCodec("UTF-8");
