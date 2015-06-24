@@ -37,6 +37,8 @@
 #include "Settings.h"
 #include "Timer.h"
 
+#include <shlobj.h>
+
 // Global helper class to spread variables around across threads.
 
 class ShortcutDialog;

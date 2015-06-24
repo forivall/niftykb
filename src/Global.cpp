@@ -36,18 +36,19 @@ Global::Global() {
   bQuit = false;
 
   QStringList qsl;
-  // qsl << QCoreApplication::instance()->applicationDirPath();
+  qsl << QCoreApplication::instance()->applicationDirPath();
   qsl << QStandardPaths::writableLocation(QStandardPaths::DataLocation);
-  // QString appdata;
-  // wchar_t appData[MAX_PATH];
-  // if (SUCCEEDED(SHGetFolderPath(NULL, CSIDL_APPDATA, NULL, SHGFP_TYPE_CURRENT, appData))) {
-  //   appdata = QDir::fromNativeSeparators(QString::fromWCharArray(appData));
-  //
-  //   if (!appdata.isEmpty()) {
-  //     appdata.append(QLatin1String("/Mumble"));
-  //     qsl << appdata;
-  //   }
-  // }
+  QString appdata;
+  // wchar_t appDataWchar[MAX_PATH];
+  char appDataWchar[MAX_PATH];
+  if (SUCCEEDED(SHGetFolderPath(NULL, CSIDL_APPDATA, NULL, SHGFP_TYPE_CURRENT, appDataWchar))) {
+    appdata = QDir::fromNativeSeparators(QString::fromUtf8(appDataWchar));
+
+    if (!appdata.isEmpty()) {
+      appdata.append(QLatin1String("/nilpostman"));
+      qsl << appdata;
+    }
+  }
   qs = NULL;
   mw = NULL;
 
@@ -62,9 +63,9 @@ Global::Global() {
 
   if (!qs) {
     qs = new QSettings();
-    // if (! appdata.isEmpty()) {
-    //   qdBasePath.setPath(appdata);
-    // }
+    if (! appdata.isEmpty()) {
+      qdBasePath.setPath(appdata);
+    }
     if (! qdBasePath.exists()) {
       QDir::root().mkpath(qdBasePath.absolutePath());
       if (! qdBasePath.exists()) {
