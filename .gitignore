@@ -54,3 +54,4 @@ ipch/
 *.pro.user
 ui_*.h
 doxygen/
+.tags

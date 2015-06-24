@@ -96,7 +96,7 @@ void ShortcutKeyWidget::updateKeys(bool last) {
   qlButtons = GlobalShortcutEngine::engine->qlActiveButtons;
   bModified = true;
 
-  if (qlButtons.isEmpty()){
+  if (qlButtons.isEmpty()) {
     return;
   }
 
@@ -295,6 +295,10 @@ void GlobalShortcutEngine::needRemap() {
 */
 bool GlobalShortcutEngine::handleButton(const QVariant &button, bool down) {
   bool already = qlDownButtons.contains(button);
+  QList<QVariant> &qlButton = button.toList();
+  unsigned int keyid = qlButton.at(0).toUInt();
+  qWarning("GlobalShortcutEngine: handling button %d, down?$%d", keyid, down);
+  QUuid &GUID_SysKeyboard = qlButton.at(1).toUuid();
   if (already == down) {
     return qlSuppressed.contains(button);
   }
