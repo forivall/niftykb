@@ -69,15 +69,17 @@ GlobalShortcutWin::GlobalShortcutWin() {
   GetKeyboardState(ucKeyState);
 
   moveToThread(this);
-  start(QThread::LowestPriority);
+  qWarning("GlobalShortcutWin: Starting thread...");
+	start(QThread::LowestPriority);
 }
 
 GlobalShortcutWin::~GlobalShortcutWin() {
-  quit();
-  wait();
+	quit();
+	wait();
 }
 
 void GlobalShortcutWin::run() {
+  qWarning("GlobalShortcutWin: Started thread!");
   if (FAILED(DirectInput8Create(GetModuleHandle(NULL), DIRECTINPUT_VERSION, IID_IDirectInput8, reinterpret_cast<void **>(&pDI), NULL))) {
     qFatal("GlobalShortcutWin: Failed to create d8input");
     return;
@@ -107,7 +109,7 @@ void GlobalShortcutWin::run() {
   while (! g.mw) {
     this->yieldCurrentThread();
   }
-
+  qWarning("GlobalShortcutWin: bhook = 0x%x", bHook);
   if (bHook) {
     HMODULE hSelf;
     GetModuleHandleEx(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS | GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT, (LPCSTR) &HookKeyboard, &hSelf);
@@ -122,7 +124,10 @@ void GlobalShortcutWin::run() {
 
   setPriority(QThread::TimeCriticalPriority);
 
+
+  qWarning("GlobalShortcutWin: starting event loop");
   exec();
+  qWarning("GlobalShortcutWin: end event loop");
 
   if (bHook) {
     UnhookWindowsHookEx(hhKeyboard);
@@ -426,6 +431,7 @@ BOOL GlobalShortcutWin::EnumDevicesCB(LPCDIDEVICEINSTANCE pdidi, LPVOID pContext
     qFatal("GlobalShortcutWin: EnumObjects: %lx", hr);
   }
 
+  qWarning( "device %s reported %d buttons", qPrintable(name), id->qhNames.count() );
   if (id->qhNames.count() > 0) {
     QList<DWORD> types = id->qhNames.keys();
     qSort(types);
@@ -485,6 +491,7 @@ void GlobalShortcutWin::timeTicked() {
   if (g.mw->uiNewHardware != uiHardwareDevices) {
     uiHardwareDevices = g.mw->uiNewHardware;
 
+    qWarning("GlobalShortcutWin: enumDevices");
     pDI->EnumDevices(DI8DEVCLASS_ALL, EnumDevicesCB, static_cast<void *>(this), DIEDFL_ATTACHEDONLY);
   }
 

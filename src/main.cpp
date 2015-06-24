@@ -11,6 +11,8 @@ int main(int argc, char *argv[])
   QApplication a(argc, argv);
   ShortcutDialog w;
   g.mw = &w;
+
+  qWarning("nilpostman main: mw set!");
   w.show();
 
   return a.exec();
