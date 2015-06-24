@@ -391,7 +391,8 @@ LRESULT CALLBACK GlobalShortcutWin::HookMouse(int nCode, WPARAM wParam, LPARAM l
 
 BOOL CALLBACK GlobalShortcutWin::EnumDeviceObjectsCallback(LPCDIDEVICEOBJECTINSTANCE lpddoi, LPVOID pvRef) {
   InputDevice *id=static_cast<InputDevice *>(pvRef);
-  QString name = QString::fromUtf16(reinterpret_cast<const ushort *>(lpddoi->tszName));
+  QString name = QString::fromUtf8(reinterpret_cast<const char *>(lpddoi->tszName));
+
   id->qhNames[lpddoi->dwType] = name;
 
   return DIENUM_CONTINUE;
@@ -401,8 +402,8 @@ BOOL GlobalShortcutWin::EnumDevicesCB(LPCDIDEVICEINSTANCE pdidi, LPVOID pContext
   GlobalShortcutWin *cbgsw=static_cast<GlobalShortcutWin *>(pContext);
   HRESULT hr;
 
-  QString name = QString::fromUtf16(reinterpret_cast<const ushort *>(pdidi->tszProductName));
-  QString sname = QString::fromUtf16(reinterpret_cast<const ushort *>(pdidi->tszInstanceName));
+  QString name = QString::fromUtf8(reinterpret_cast<const char *>(pdidi->tszProductName));
+  QString sname = QString::fromUtf8(reinterpret_cast<const char *>(pdidi->tszInstanceName));
 
   InputDevice *id = new InputDevice;
   id->pDID = NULL;

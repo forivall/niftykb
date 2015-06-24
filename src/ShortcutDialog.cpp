@@ -16,7 +16,7 @@ ShortcutDialog::ShortcutDialog(QWidget *parent) :
 
   installEventFilter(this);
 
-  uiNewHardware = 0;
+  uiNewHardware = 1; // needs to be set to 1 so that an initial scan takes place
 
   bool canSuppress = GlobalShortcutEngine::engine->canSuppress();
   bool canDisable = GlobalShortcutEngine::engine->canDisable();
