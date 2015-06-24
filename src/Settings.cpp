@@ -48,10 +48,6 @@ ShortcutTarget::ShortcutTarget() {
   bLinks = bChildren = bForceCenter = false;
 }
 
-bool ShortcutTarget::isServerSpecific() const {
-  return (! bUsers && (iChannel >= 0));
-}
-
 bool ShortcutTarget::operator == (const ShortcutTarget &o) const {
   if ((bUsers != o.bUsers) || (bForceCenter != o.bForceCenter)) {
     return false;
@@ -131,55 +127,49 @@ void Settings::load() {
   load(g.qs);
 }
 
+#define LOAD(var,name) var = qvariant_cast<BOOST_TYPEOF(var)>(settings_ptr->value(QLatin1String(name), var))
 void Settings::load(QSettings* settings_ptr) {
-  // // Config updates
-  // SAVELOAD(bShortcutEnable, "shortcut/enable");
-  // SAVELOAD(bSuppressMacEventTapWarning, "shortcut/mac/suppresswarning");
-  // SAVELOAD(bEnableEvdev, "shortcut/linux/evdev/enable");
-  //
-  // int nshorts = settings_ptr->beginReadArray(QLatin1String("shortcuts"));
-  // for (int i=0; i<nshorts; i++) {
-  //   settings_ptr->setArrayIndex(i);
-  //   Shortcut s;
-  //
-  //   s.iIndex = -2;
-  //
-  //   SAVELOAD(s.iIndex, "index");
-  //   SAVELOAD(s.qlButtons, "keys");
-  //   SAVELOAD(s.bSuppress, "suppress");
-  //   s.qvData = settings_ptr->value(QLatin1String("data"));
-  //   if (s.iIndex >= -1) {
-  //     qlShortcuts << s;
-  //   }
-  // }
-  // settings_ptr->endArray();
+  // Config updates
+  LOAD(bShortcutEnable, "shortcut/enable");
 
+  int nshorts = settings_ptr->beginReadArray(QLatin1String("shortcuts"));
+  for (int i=0; i<nshorts; i++) {
+    settings_ptr->setArrayIndex(i);
+    Shortcut s;
+
+    s.iIndex = -2;
+
+    LOAD(s.iIndex, "index");
+    LOAD(s.qlButtons, "keys");
+    LOAD(s.bSuppress, "suppress");
+    s.qvData = settings_ptr->value(QLatin1String("data"));
+    if (s.iIndex >= -1) {
+      qlShortcuts << s;
+    }
+  }
+  settings_ptr->endArray();
+  qWarning("Loaded Settings from %s", qPrintable(settings_ptr->fileName()));
 }
+#undef LOAD
 
-#undef SAVELOAD
-#define SAVELOAD(var,name) if (var != def.var) settings_ptr->setValue(QLatin1String(name), var); else settings_ptr->remove(QLatin1String(name))
-#define SAVEFLAG(var,name) if (var != def.var) settings_ptr->setValue(QLatin1String(name), static_cast<int>(var)); else settings_ptr->remove(QLatin1String(name))
-
-
+#define SAVE(var,name) if (var != def.var) settings_ptr->setValue(QLatin1String(name), var); else settings_ptr->remove(QLatin1String(name))
 void Settings::save() {
   QSettings* settings_ptr = g.qs;
   Settings def;
 
-  // SAVELOAD(bShortcutEnable, "shortcut/enable");
-  // SAVELOAD(bSuppressMacEventTapWarning, "shortcut/mac/suppresswarning");
-  // SAVELOAD(bSuppressMacEventTapWarning, "shortcut/linux/evdev/enable");
-  //
-  // settings_ptr->beginWriteArray(QLatin1String("shortcuts"));
-  // int idx = 0;
-  // foreach(const Shortcut &s, qlShortcuts) {
-  //   if (! s.isServerSpecific()) {
-  //     settings_ptr->setArrayIndex(idx++);
-  //     settings_ptr->setValue(QLatin1String("index"), s.iIndex);
-  //     settings_ptr->setValue(QLatin1String("keys"), s.qlButtons);
-  //     settings_ptr->setValue(QLatin1String("suppress"), s.bSuppress);
-  //     settings_ptr->setValue(QLatin1String("data"), s.qvData);
-  //   }
-  // }
-  // settings_ptr->endArray();
+  SAVE(bShortcutEnable, "shortcut/enable");
 
+  settings_ptr->beginWriteArray(QLatin1String("shortcuts"));
+  int idx = 0;
+  foreach(const Shortcut &s, qlShortcuts) {
+    settings_ptr->setArrayIndex(idx++);
+    settings_ptr->setValue(QLatin1String("index"), s.iIndex);
+    settings_ptr->setValue(QLatin1String("keys"), s.qlButtons);
+    settings_ptr->setValue(QLatin1String("suppress"), s.bSuppress);
+    settings_ptr->setValue(QLatin1String("data"), s.qvData);
+  }
+  settings_ptr->endArray();
+  settings_ptr->sync();
+  qWarning("Saved Settings to %s", qPrintable(settings_ptr->fileName()));
 }
+#undef SAVE

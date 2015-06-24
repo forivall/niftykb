@@ -30,6 +30,8 @@ ShortcutDialog::ShortcutDialog(QWidget *parent) :
   if (canSuppress){
     qtwShortcuts->header()->setSectionResizeMode(SHORTCUT_LIST_ITEM_SUPPRESS, QHeaderView::ResizeToContents);
   }
+
+  load(g.s);
 }
 
 ShortcutDialog::~ShortcutDialog()
@@ -39,7 +41,7 @@ ShortcutDialog::~ShortcutDialog()
 
 
 void ShortcutDialog::commit() {
-//    qtwShortcuts->closePersistentEditor(qtwShortcuts->currentItem(), qtwShortcuts->currentColumn());
+  qtwShortcuts->closePersistentEditor(qtwShortcuts->currentItem(), qtwShortcuts->currentColumn());
 }
 
 void ShortcutDialog::on_qpbAdd_clicked(bool) {
@@ -60,6 +62,11 @@ void ShortcutDialog::on_qpbRemove_clicked(bool) {
   int idx = qtwShortcuts->indexOfTopLevelItem(qtwi);
   delete qtwi;
   qlShortcuts.removeAt(idx);
+}
+
+void ShortcutDialog::on_qpbSave_clicked(bool) {
+  commit();
+  save();
 }
 
 void ShortcutDialog::on_qtwShortcuts_currentItemChanged(QTreeWidgetItem *item, QTreeWidgetItem *) {
@@ -96,7 +103,8 @@ void ShortcutDialog::load(const Settings &r) {
 }
 
 void ShortcutDialog::save() const {
-  // g.s.qlShortcuts = qlShortcuts;
+  g.s.qlShortcuts = qlShortcuts;
+  g.s.save();
 }
 
 

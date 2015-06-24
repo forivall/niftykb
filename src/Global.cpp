@@ -37,7 +37,6 @@ Global::Global() {
 
   QStringList qsl;
   qsl << QCoreApplication::instance()->applicationDirPath();
-  qsl << QStandardPaths::writableLocation(QStandardPaths::DataLocation);
   QString appdata;
   // wchar_t appDataWchar[MAX_PATH];
   char appDataWchar[MAX_PATH];
@@ -49,6 +48,8 @@ Global::Global() {
       qsl << appdata;
     }
   }
+  qsl << QStandardPaths::writableLocation(QStandardPaths::DataLocation);
+
   qs = NULL;
   mw = NULL;
 
@@ -62,10 +63,11 @@ Global::Global() {
   }
 
   if (!qs) {
-    qs = new QSettings();
     if (! appdata.isEmpty()) {
       qdBasePath.setPath(appdata);
     }
+    qs = new QSettings(QString::fromLatin1("%1/nilpostman.ini").arg(qdBasePath.path()), QSettings::IniFormat);
+    qdBasePath = QStandardPaths::writableLocation(QStandardPaths::DataLocation);
     if (! qdBasePath.exists()) {
       QDir::root().mkpath(qdBasePath.absolutePath());
       if (! qdBasePath.exists()) {

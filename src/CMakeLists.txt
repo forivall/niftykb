@@ -9,10 +9,12 @@ find_package(Qt5Gui)
 include_directories(${Qt5Gui_PRIVATE_INCLUDE_DIRS})
 find_package(Qt5Widgets REQUIRED)
 find_package(DirectX REQUIRED)
+find_package(Boost REQUIRED)
 qt5_wrap_ui(UI_HEADERS ShortcutDialog.ui)
 
 include_directories(
   ${DIRECTX_INCLUDE_DIR}
+  ${Boost_INCLUDE_DIR}
 )
 
 # Tell CMake to create the helloworld executable

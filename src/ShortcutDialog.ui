@@ -63,7 +63,7 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_3">
+      <widget class="QPushButton" name="qpbSave">
        <property name="text">
         <string>Save</string>
        </property>

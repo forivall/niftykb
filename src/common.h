@@ -11,22 +11,10 @@
 #include <QFocusEvent>
 
 #include <math.h>
+#include <boost/typeof/typeof.hpp>
 
 #define STACKVAR(type, varname, count) type *varname=reinterpret_cast<type *>(_alloca(sizeof(type) * (count)))
 #define __cdecl
-// typedef WId HWND;
-// #include <arpa/inet.h>
-// #include <windows.h>
-// #include <shellapi.h>
-// #include <winsock2.h>
-// #include <qos2.h>
-// #include <wintrust.h>
-// #include <Softpub.h>
 #include <Dbt.h>
-// #include <delayimp.h>
-// #include <shlobj.h>
-// #include <tlhelp32.h>
-// #include <psapi.h>
-// #include <math.h>
 
 #endif

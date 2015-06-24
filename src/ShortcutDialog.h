@@ -35,6 +35,7 @@ class ShortcutDialog : public QDialog, public Ui::ShortcutDialog
     void commit();
     void on_qpbAdd_clicked(bool);
     void on_qpbRemove_clicked(bool);
+    void on_qpbSave_clicked(bool);
     void on_qtwShortcuts_currentItemChanged(QTreeWidgetItem *, QTreeWidgetItem *);
     void on_qtwShortcuts_itemChanged(QTreeWidgetItem *, int);
   private:
