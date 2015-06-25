@@ -16,11 +16,14 @@ Download [Qt5](http://www.qt.io/download-open-source/),
 the [DirectX June 2010 sdk](https://www.microsoft.com/en-ca/download/details.aspx?id=6812),
 and [Boost](http://www.boost.org/users/download/).
 
+<small>(Script assumes you have Qt installed in `%SYSTEMDRIVE%\Qt` and MSVS 12.0 in `%PROGRAMFILES(X86)%\Microsoft Visual Studio 12.0`</small>
+
 Replace "[arch]" with `x86` or `x64`
 ```
 cd build-x[arch]-debug
-../usr/bin/env_x[arch] cmake -DCMAKE_BUILD_TYPE=Debug "-G", "NMake Makefiles" ..
-../usr/bin/env_x[arch] jom
+../usr/bin/env_x[arch].cmd cmake -DCMAKE_BUILD_TYPE=Debug -G "NMake Makefiles" ..
+../usr/bin/env_x[arch].cmd jom
+../usr/bin/copydebugdlls.cmd [arch]
 ```
 
 You can also use qt creator:joy_cat: or :see_no_evil:visual:hear_no_evil:studio:speak_no_evil: to build, ymmv.
