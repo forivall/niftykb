@@ -38,7 +38,7 @@ QString findAppData(QStringList &qsl) {
     appdata = QDir::fromNativeSeparators(QString::fromUtf8(appDataWchar));
 
     if (!appdata.isEmpty()) {
-      appdata.append(QLatin1String("/nilpostman"));
+      appdata.append(QLatin1String("/niftykb"));
       qsl << appdata;
     }
   }
@@ -47,7 +47,7 @@ QString findAppData(QStringList &qsl) {
 
 QString findExistingSettingsDir(const QStringList &locations) {
   foreach(const QString &dir, locations) {
-    QFile inifile(QString::fromLatin1("%1/nilpostman.ini").arg(dir));
+    QFile inifile(QString::fromLatin1("%1/niftykb.ini").arg(dir));
     if (inifile.exists() && inifile.permissions().testFlag(QFile::WriteUser)) {
       return dir;
     }
@@ -88,12 +88,12 @@ Global::Global() {
   QString dir = findExistingSettingsDir(settingsLocations);
   if (!dir.isEmpty()) {
     qdBasePath = dir;
-    qs = new QSettings(QString::fromLatin1("%1/nilpostman.ini").arg(dir), QSettings::IniFormat);
+    qs = new QSettings(QString::fromLatin1("%1/niftykb.ini").arg(dir), QSettings::IniFormat);
   }
 
   if (!qs) {
     qdBasePath = findWritableBasePath(appdata);
-    qs = new QSettings(QString::fromLatin1("%1/nilpostman.ini").arg(qdBasePath.path()), QSettings::IniFormat);
+    qs = new QSettings(QString::fromLatin1("%1/niftykb.ini").arg(qdBasePath.path()), QSettings::IniFormat);
   }
 
   qs->setIniCodec("UTF-8");

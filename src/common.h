@@ -1,5 +1,5 @@
-#ifndef NILPOSTMAN_COMMON_H_
-#define NILPOSTMAN_COMMON_H_
+#ifndef NIFTYKB_COMMON_H_
+#define NIFTYKB_COMMON_H_
 
 #include <QtCore/QStandardPaths>
 #include <QtCore>
