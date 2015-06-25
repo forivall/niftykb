@@ -1,6 +1,6 @@
 # Nifty Keybinder
 
-Allows mapping hard-to-detect keys to output commands over [Windows' MailSlot IPC](https://en.wikipedia.org/wiki/MailSlot) and perform other nifty tasks. <small>(run programs and faking other, more detectable keystrokes)</small>
+Allows mapping hard-to-detect keys to output commands over [Windows' MailSlot IPC](https://en.wikipedia.org/wiki/MailSlot) and perform other nifty tasks. <em><small>(run programs and faking other, more detectable keystrokes)</small></em>
 
 Designed to work with an upcoming fork of the [Teamspeak 3](http://teamspeak.com)
 [G-Key Plugin](http://addons.teamspeak.com/directory/addon/hardware/G-Key-plugin.html)
@@ -16,7 +16,7 @@ Download [Qt5](http://www.qt.io/download-open-source/),
 the [DirectX June 2010 sdk](https://www.microsoft.com/en-ca/download/details.aspx?id=6812),
 and [Boost](http://www.boost.org/users/download/).
 
-<small>(Script assumes you have Qt installed in `%SYSTEMDRIVE%\Qt` and MSVS 12.0 in `%PROGRAMFILES(X86)%\Microsoft Visual Studio 12.0`</small>
+<em><small>(Script assumes you have Qt installed in `%SYSTEMDRIVE%\Qt` and MSVS 12.0 in `%PROGRAMFILES(X86)%\Microsoft Visual Studio 12.0`)</small></em>
 
 Replace "[arch]" with `x86` or `x64`
 ```
