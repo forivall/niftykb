@@ -129,6 +129,16 @@ ShortcutActionWidget::ShortcutActionWidget(QWidget *p) : QComboBox(p) {
 
   idx++;
 
+  foreach(GlobalShortcut *gs, GlobalShortcutEngine::engine->qmShortcuts) {
+    insertItem(idx, gs->name);
+    setItemData(idx, gs->idx);
+    if (! gs->qsToolTip.isEmpty())
+      setItemData(idx, gs->qsToolTip, Qt::ToolTipRole);
+    if (! gs->qsWhatsThis.isEmpty())
+      setItemData(idx, gs->qsWhatsThis, Qt::WhatsThisRole);
+    idx++;
+  }
+
 }
 
 void ShortcutActionWidget::setIndex(int idx) {
