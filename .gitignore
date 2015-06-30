@@ -37,17 +37,21 @@ ipch/
 # SQL Server files
 *.mdf
 *.ldf
-*.vcxproj
-*.vcxproj.filters
+build*/*.vcxproj
+build*/*.vcxproj.filters
+build*/*.sln
+/*.vcxproj
+/*.vcxproj.filters
+/*.sln
 
 ## Mumble ignores
 *.pdb
-*.sln
 *.sdf
 *.suo
 *.aps
-*.vcxproj
-*.vcxproj.*
+## *.sln
+## *.vcxproj
+## *.vcxproj.*
 *~
 *.pb.h
 *.pb.cc
