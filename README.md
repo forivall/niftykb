@@ -2,9 +2,7 @@
 
 Allows mapping hard-to-detect keys to output commands over [Windows' MailSlot IPC](https://en.wikipedia.org/wiki/MailSlot) and perform other nifty tasks. <em><small>(run programs and faking other, more detectable keystrokes)</small></em>
 
-Designed to work with an upcoming fork of the [Teamspeak 3](http://teamspeak.com)
-[G-Key Plugin](http://addons.teamspeak.com/directory/addon/hardware/G-Key-plugin.html)
-[(repo)](https://github.com/Armada651/g-key)
+Designed to work with the [niftykb-ts3 plugin](https://github.com/forivall/niftykb-ts3) for [Teamspeak 3](http://teamspeak.com) Plugin.
 
 Adapted from mumble's global keybinding code. May be refactored to use [nil](https://github.com/noorus/nil) in the future.
 
@@ -30,5 +28,4 @@ You can also use qt creator:joy_cat: or :see_no_evil:visual:hear_no_evil:studio:
 
 ## TODO
 - Actually do stuff!
-- Create Teamspeak plugin
 - Support [g-keys](http://gaming.logitech.com/developers), either with the pure lib or with nil.
