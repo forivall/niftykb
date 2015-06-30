@@ -23,6 +23,11 @@
      </column>
      <column>
       <property name="text">
+       <string>Action</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
        <string>Debug Message</string>
       </property>
      </column>

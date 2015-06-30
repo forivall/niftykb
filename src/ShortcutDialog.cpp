@@ -1,18 +1,19 @@
 #include "ShortcutDialog.h"
 #include "ui_ShortcutDialog.h"
 
-enum {
-  // SHORTCUT_LIST_ITEM_ACTION = 0,
-  SHORTCUT_LIST_ITEM_BUTTON = 0,
-  SHORTCUT_LIST_ITEM_MESSAGE,
-  SHORTCUT_LIST_ITEM_SUPPRESS,
-  SHORTCUT_LIST_ITEMS_COUNT
+enum ShortcutListItem {
+  BUTTON = 0,
+  ACTION,
+  DATA,
+  SUPPRESS,
+  _COUNT
 };
 
 ShortcutDialog::ShortcutDialog(QWidget *parent) :
   QDialog(parent)
 {
   createActions();
+  setupTrayIcon();
   setupGui();
   setupUi(this);
 
@@ -23,14 +24,14 @@ ShortcutDialog::ShortcutDialog(QWidget *parent) :
   bool canSuppress = GlobalShortcutEngine::engine->canSuppress();
   bool canDisable = GlobalShortcutEngine::engine->canDisable();
 
-  qtwShortcuts->setColumnCount(canSuppress ? SHORTCUT_LIST_ITEMS_COUNT : (SHORTCUT_LIST_ITEMS_COUNT - 1));
+  qtwShortcuts->setColumnCount(canSuppress ? ShortcutListItem::_COUNT : (ShortcutListItem::_COUNT - 1));
   qtwShortcuts->setItemDelegate(new ShortcutDelegate(qtwShortcuts));
 
-  qtwShortcuts->header()->setSectionResizeMode(SHORTCUT_LIST_ITEM_MESSAGE, QHeaderView::Fixed);
-  qtwShortcuts->header()->resizeSection(SHORTCUT_LIST_ITEM_MESSAGE, 150);
-  qtwShortcuts->header()->setSectionResizeMode(SHORTCUT_LIST_ITEM_BUTTON, QHeaderView::Stretch);
+  qtwShortcuts->header()->setSectionResizeMode(ShortcutListItem::ACTION, QHeaderView::Fixed);
+  qtwShortcuts->header()->resizeSection(ShortcutListItem::ACTION, 150);
+  qtwShortcuts->header()->setSectionResizeMode(ShortcutListItem::BUTTON, QHeaderView::Stretch);
   if (canSuppress){
-    qtwShortcuts->header()->setSectionResizeMode(SHORTCUT_LIST_ITEM_SUPPRESS, QHeaderView::ResizeToContents);
+    qtwShortcuts->header()->setSectionResizeMode(ShortcutListItem::SUPPRESS, QHeaderView::ResizeToContents);
   }
 
   load(g.s);
@@ -59,14 +60,36 @@ void ShortcutDialog::createActions() {
   // send debug message
   gsDeafSelf=new GlobalShortcut(this, idx++, tr("Deafen Self", "Global Shortcut"), false, 0);
   gsDeafSelf->setObjectName(QLatin1String("gsDeafSelf"));
-
+}
+void ShortcutDialog::setupTrayIcon() {
+  qiIcon.addFile(":/assets/monkey_face_16x16.png");
   qstiIcon = new QSystemTrayIcon(qiIcon, this);
   qstiIcon->setToolTip(tr("NiftyKb"));
   qstiIcon->setObjectName(QLatin1String("Icon"));
 
+  connect(qstiIcon, &QSystemTrayIcon::activated, [this](QSystemTrayIcon::ActivationReason reason) {
+    if (reason != QSystemTrayIcon::Trigger && reason != QSystemTrayIcon::DoubleClick)
+      return;
+
+    toggleWindow();
+  });
+
 #ifndef Q_OS_MAC
   qstiIcon->show();
 #endif
+}
+
+void ShortcutDialog::toggleWindow() {
+  if (!isVisible()) {
+    show();
+    setWindowState((windowState() & ~Qt::WindowMinimized) | Qt::WindowActive);
+    raise();
+    activateWindow();
+  } else {
+    if (qstiIcon) {
+      hide();
+    }
+  }
 }
 
 void ShortcutDialog::setupGui()  {
@@ -150,15 +173,15 @@ void ShortcutDialog::on_qtwShortcuts_itemChanged(QTreeWidgetItem *item, int) {
   int idx = qtwShortcuts->indexOfTopLevelItem(item);
 
   Shortcut &sc = qlShortcuts[idx];
-  sc.qlButtons = item->data(SHORTCUT_LIST_ITEM_BUTTON, Qt::DisplayRole).toList();
+  sc.qlButtons = item->data(ShortcutListItem::BUTTON, Qt::DisplayRole).toList();
   // which action to take
-  sc.iIndex = item->data(SHORTCUT_LIST_ITEM_MESSAGE, Qt::DisplayRole).toInt();
-  sc.bSuppress = item->checkState(SHORTCUT_LIST_ITEM_SUPPRESS) == Qt::Checked;
-  // sc.qvData = item->data(SHORTCUT_LIST_ITEM_ACTION, Qt::DisplayRole);
+  sc.iIndex = item->data(ShortcutListItem::ACTION, Qt::DisplayRole).toInt();
+  sc.bSuppress = item->checkState(ShortcutListItem::SUPPRESS) == Qt::Checked;
+  // sc.qvData = item->data(ShortcutListItem::DATA, Qt::DisplayRole);
 
   const ::GlobalShortcut *gs = GlobalShortcutEngine::engine->qmShortcuts.value(sc.iIndex);
   // if (gs && sc.qvData.type() != gs->qvDefault.type()) {
-  //   item->setData(SHORTCUT_LIST_ITEM_ACTION, Qt::DisplayRole, gs->qvDefault);
+  //   item->setData(ShortcutListItem::DATA, Qt::DisplayRole, gs->qvDefault);
   // }
 }
 
@@ -186,36 +209,35 @@ QTreeWidgetItem *ShortcutDialog::itemForShortcut(const Shortcut &sc) const {
   QTreeWidgetItem *item = new QTreeWidgetItem();
   ::GlobalShortcut *gs = GlobalShortcutEngine::engine->qmShortcuts.value(sc.iIndex);
 
-  item->setData(SHORTCUT_LIST_ITEM_BUTTON, Qt::DisplayRole, sc.qlButtons);
+  item->setData(ShortcutListItem::BUTTON, Qt::DisplayRole, sc.qlButtons);
+  item->setData(ShortcutListItem::ACTION, Qt::DisplayRole, static_cast<unsigned int>(sc.iIndex));
+  item->setCheckState(ShortcutListItem::SUPPRESS, sc.bSuppress ? Qt::Checked : Qt::Unchecked);
   // TODO: change to textinput + qstring
-  item->setData(SHORTCUT_LIST_ITEM_MESSAGE, Qt::DisplayRole, static_cast<unsigned int>(sc.iIndex));
-  item->setCheckState(SHORTCUT_LIST_ITEM_SUPPRESS, sc.bSuppress ? Qt::Checked : Qt::Unchecked);
-  // TODO: remove all references
-  // if (sc.qvData.isValid() && gs && (sc.qvData.type() == gs->qvDefault.type())) {
-  //   item->setData(SHORTCUT_LIST_ITEM_ACTION, Qt::DisplayRole, sc.qvData);
-  // } else if (gs) {
-  //   item->setData(SHORTCUT_LIST_ITEM_ACTION, Qt::DisplayRole, gs->qvDefault);
-  // }
+  if (sc.qvData.isValid() && gs && (sc.qvData.type() == gs->qvDefault.type())) {
+    item->setData(ShortcutListItem::DATA, Qt::DisplayRole, sc.qvData);
+  } else if (gs) {
+    item->setData(ShortcutListItem::DATA, Qt::DisplayRole, gs->qvDefault);
+  }
   item->setFlags(item->flags() | Qt::ItemIsEditable);
 
 
-  item->setData(SHORTCUT_LIST_ITEM_BUTTON, Qt::ToolTipRole, tr("Shortcut button combination."));
-  item->setData(SHORTCUT_LIST_ITEM_BUTTON, Qt::WhatsThisRole, tr("<b>This is the global shortcut key combination.</b><br />"
+  item->setData(ShortcutListItem::BUTTON, Qt::ToolTipRole, tr("Shortcut button combination."));
+  item->setData(ShortcutListItem::BUTTON, Qt::WhatsThisRole, tr("<b>This is the global shortcut key combination.</b><br />"
                                          "Click this field and then press the desired key/button combo "
                                          "to rebind. Double-click to clear."));
 
   // TODO: update this text appropriately
   if (gs) {
     if (! gs->qsToolTip.isEmpty()) {
-      item->setData(SHORTCUT_LIST_ITEM_MESSAGE, Qt::ToolTipRole, gs->qsToolTip);
+      item->setData(ShortcutListItem::ACTION, Qt::ToolTipRole, gs->qsToolTip);
     }
     if (! gs->qsWhatsThis.isEmpty()) {
-      item->setData(SHORTCUT_LIST_ITEM_MESSAGE, Qt::WhatsThisRole, gs->qsWhatsThis);
+      item->setData(ShortcutListItem::ACTION, Qt::WhatsThisRole, gs->qsWhatsThis);
     }
   }
 
-  item->setData(SHORTCUT_LIST_ITEM_SUPPRESS, Qt::ToolTipRole, tr("Suppress keys from other applications"));
-  item->setData(SHORTCUT_LIST_ITEM_SUPPRESS, Qt::WhatsThisRole, tr("<b>This hides the button presses from other applications.</b><br />"
+  item->setData(ShortcutListItem::SUPPRESS, Qt::ToolTipRole, tr("Suppress keys from other applications"));
+  item->setData(ShortcutListItem::SUPPRESS, Qt::WhatsThisRole, tr("<b>This hides the button presses from other applications.</b><br />"
                                          "Enabling this will hide the button (or the last button of a multi-button combo) "
                                          "from other applications. Note that not all buttons can be suppressed."));
 

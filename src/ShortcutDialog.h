@@ -28,6 +28,7 @@ class ShortcutDialog : public QDialog, public Ui::ShortcutDialog
 
     QString title() const;
     bool nativeEvent(const QByteArray &, void *, long *);
+    void toggleWindow();
 
     ~ShortcutDialog();
   public slots:
@@ -50,6 +51,7 @@ class ShortcutDialog : public QDialog, public Ui::ShortcutDialog
     QTreeWidgetItem *itemForShortcut(const Shortcut &) const;
     void createActions();
     void setupGui();
+    void setupTrayIcon();
     void updateTrayIcon();
   private:
 };
