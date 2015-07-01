@@ -12,7 +12,7 @@ find_package(Qt5Widgets REQUIRED)
 find_package(DirectX REQUIRED)
 find_package(Boost REQUIRED)
 
-qt5_wrap_ui(UI_HEADERS ShortcutDialog.ui)
+qt5_wrap_ui(UI_HEADERS ShortcutEditor.ui)
 qt5_add_resources(UI_RESOURCES resources.qrc)
 
 include_directories(
@@ -23,7 +23,8 @@ include_directories(
 # Tell CMake to create the helloworld executable
 add_executable(
   niftykb WIN32 main.cpp
-  ShortcutDialog.cpp
+  ShortcutEditor.cpp
+  MainWindow.cpp
   GlobalShortcut.cpp
   GlobalShortcut_win.cpp os_win.cpp
   Timer.cpp Settings.cpp Global.cpp

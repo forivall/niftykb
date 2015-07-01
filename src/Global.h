@@ -35,6 +35,7 @@
 
 #include "common.h"
 
+#include "MainWindow.h"
 #include "Settings.h"
 #include "Timer.h"
 
@@ -50,7 +51,7 @@ struct Global Q_DECL_FINAL {
     Q_DISABLE_COPY(Global)
   public:
     static Global *g_global_struct;
-    ShortcutDialog *mw;
+    MainWindow *mw;
     Settings s;
     QSettings *qs;
     QDir qdBasePath;

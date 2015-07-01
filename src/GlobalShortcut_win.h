@@ -34,7 +34,6 @@
 
 #include "common.h"
 #include "GlobalShortcut.h"
-#include "ShortcutDialog.h"
 #include "Timer.h"
 
 #define DIRECTINPUT_VERSION 0x0800
