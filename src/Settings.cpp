@@ -31,6 +31,7 @@
 /* Modifications (c) 2015 Jordan Klassen, GPLv3 or later license */
 
 #include "common.h"
+
 #include "Settings.h"
 
 #include "Global.h"

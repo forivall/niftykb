@@ -31,8 +31,9 @@
 
 #include "common.h"
 
-#include "Global.h"
 #include "GlobalShortcut.h"
+
+#include "Global.h"
 
 /**
  * Used to save the global, unique, platform specific GlobalShortcutEngine.

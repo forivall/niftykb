@@ -32,6 +32,7 @@
 #include "common.h"
 
 #include "GlobalShortcut_win.h"
+
 #include "Global.h"
 
 #undef FAILED
