@@ -33,10 +33,10 @@
 #ifndef NIFTYKB_SETTINGS_H_
 #define NIFTYKB_SETTINGS_H_
 
-#include <QtCore/QVariant>
-#include <QtCore/QList>
-#include <QtCore/QSettings>
-#include <QtCore/QStringList>
+#include <QVariant>
+#include <QList>
+#include <QSettings>
+#include <QStringList>
 
 // Global helper classes to spread variables around across threads
 // especially helpful to initialize things like the stored

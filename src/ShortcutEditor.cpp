@@ -1,8 +1,11 @@
 /* (c) 2015 Jordan Klassen, GPLv3 or later license */
 #include "common.h"
 
-#include "Global.h"
 #include "ShortcutEditor.h"
+
+#include "Global.h"
+#include "ShortcutEditorWidgets.h"
+
 #include "ui_ShortcutEditor.h"
 
 enum ShortcutListItem {

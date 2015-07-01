@@ -23,7 +23,7 @@ include_directories(
 # Tell CMake to create the helloworld executable
 add_executable(
   niftykb WIN32 main.cpp
-  ShortcutEditor.cpp
+  ShortcutEditor.cpp ShortcutEditorWidgets.cpp
   MainWindow.cpp
   GlobalShortcut.cpp
   GlobalShortcut_win.cpp os_win.cpp

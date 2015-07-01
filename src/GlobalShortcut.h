@@ -35,14 +35,7 @@
 #include "Settings.h"
 #include "Timer.h"
 
-#include <QtCore/QtGlobal>
-#include <QtCore/QThread>
-
-#include <QtWidgets/QToolButton>
-#include <QtWidgets/QStyledItemDelegate>
-#include <QtWidgets/QLineEdit>
-#include <QtWidgets/QComboBox>
-#include <QtWidgets/QDialog>
+#include <QThread>
 
 class GlobalShortcut : public QObject {
     friend class GlobalShortcutEngine;
@@ -69,80 +62,6 @@ class GlobalShortcut : public QObject {
     bool active() const {
       return ! qlActive.isEmpty();
     }
-};
-
-/**
- * Widget used to define and key combination for a shortcut. Once it gains
- * focus it will listen for a button combination until it looses focus.
- */
-class ShortcutKeyWidget : public QLineEdit {
-  private:
-    Q_OBJECT
-    Q_DISABLE_COPY(ShortcutKeyWidget)
-    Q_PROPERTY(QList<QVariant> shortcut READ getShortcut WRITE setShortcut USER true)
-  protected:
-    virtual void focusInEvent(QFocusEvent *event);
-    virtual void focusOutEvent(QFocusEvent *event);
-    virtual void mouseDoubleClickEvent(QMouseEvent *e);
-    virtual bool eventFilter(QObject *, QEvent *);
-  public:
-    QList<QVariant> qlButtons;
-    bool bModified;
-    ShortcutKeyWidget(QWidget *p = NULL);
-    QList<QVariant> getShortcut() const;
-    void displayKeys(bool last = true);
-  public slots:
-    void updateKeys(bool last);
-    void setShortcut(const QList<QVariant> &shortcut);
-  signals:
-    void keySet(bool, bool);
-};
-
-/**
- * Combo box widget used to define the kind of action a shortcut triggers. Then
- * entries get auto-generated from the GlobalShortcutEngine::qmShortcuts store.
- *
- * @see GlobalShortcutEngine
- */
-class ShortcutActionWidget : public QComboBox {
-  private:
-    Q_OBJECT
-    Q_DISABLE_COPY(ShortcutActionWidget)
-    Q_PROPERTY(unsigned int index READ index WRITE setIndex USER true)
-  public:
-    ShortcutActionWidget(QWidget *p = NULL);
-    unsigned int index() const;
-    void setIndex(int);
-};
-
-class ShortcutToggleWidget : public QComboBox {
-  private:
-    Q_OBJECT
-    Q_DISABLE_COPY(ShortcutToggleWidget)
-    Q_PROPERTY(int index READ index WRITE setIndex USER true)
-  public:
-    ShortcutToggleWidget(QWidget *p = NULL);
-    int index() const;
-    void setIndex(int);
-};
-
-/**
- * Used to get custom display and edit behaviour for the model used in GlobalShortcutConfig::qtwShortcuts.
- * It registers custom handlers which link specific types to custom ShortcutXWidget editors and also
- * provides a basic textual representation for them when they are not edited.
- *
- * @see GlobalShortcutConfig
- * @see ShortcutKeyWidget
- * @see ShortcutActionWidget
- * @see ShortcutTargetWidget
- */
-class ShortcutDelegate : public QStyledItemDelegate {
-    Q_OBJECT
-    Q_DISABLE_COPY(ShortcutDelegate)
-  public:
-    ShortcutDelegate(QObject *);
-    ~ShortcutDelegate() Q_DECL_OVERRIDE;
-    QString displayText(const QVariant &, const QLocale &) const Q_DECL_OVERRIDE;
 };
 
 struct ShortcutKey {

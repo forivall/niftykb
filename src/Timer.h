@@ -32,7 +32,7 @@
 #ifndef MUMBLE_TIMER_H_
 #define MUMBLE_TIMER_H_
 
-#include <QtCore/QtGlobal>
+#include <QtGlobal>
 
 // All timer resolutions are in microseconds.
 
