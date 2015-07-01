@@ -1,9 +1,8 @@
-#ifndef SHORTCUTDIALOG_H
-#define SHORTCUTDIALOG_H
+/* (c) 2015 Jordan Klassen, GPLv3 or later license */
+#ifndef NIFTYKB_SHORTCUTEDITOR_H
+#define NIFTYKB_SHORTCUTEDITOR_H
 
-#include "common.h"
 #include "Settings.h"
-#include "Global.h"
 
 #define DIRECTINPUT_VERSION 0x0800
 #include <dinput.h>
@@ -36,4 +35,4 @@ class ShortcutEditor : public QWidget, public Ui::ShortcutEditor
   private:
 };
 
-#endif // SHORTCUTDIALOG_H
+#endif // NIFTYKB_SHORTCUTEDITOR_H

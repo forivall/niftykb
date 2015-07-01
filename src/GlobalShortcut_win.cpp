@@ -29,6 +29,8 @@
 */
 /* Modifications (c) 2015 Jordan Klassen, GPLv3 or later license */
 
+#include "common.h"
+
 #include "GlobalShortcut_win.h"
 #include "Global.h"
 

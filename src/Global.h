@@ -30,16 +30,16 @@
 */
 /* Modifications (c) 2015 Jordan Klassen, GPLv3 or later license */
 
-#ifndef MUMBLE_MUMBLE_GLOBAL_H_
-#define MUMBLE_MUMBLE_GLOBAL_H_
-
-#include "common.h"
+#ifndef NIFTYKB_GLOBAL_H_
+#define NIFTYKB_GLOBAL_H_
 
 #include "MainWindow.h"
 #include "Settings.h"
 #include "Timer.h"
 
 #include <shlobj.h>
+
+#include <QDir>
 
 // Global helper class to spread variables around across threads.
 
@@ -67,4 +67,4 @@ struct Global Q_DECL_FINAL {
 
 #define g (*Global::g_global_struct)
 
-#endif
+#endif // NIFTYKB_GLOBAL_H_

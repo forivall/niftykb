@@ -58,4 +58,4 @@ class Timer {
     bool operator>(const Timer &other) const;
 };
 
-#endif
+#endif // MUMBLE_TIMER_H_

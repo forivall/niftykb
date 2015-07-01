@@ -29,8 +29,11 @@
 */
 /* Modifications (c) 2015 Jordan Klassen, GPLv3 or later license */
 
-#ifndef MUMBLE_MUMBLE_GLOBALSHORTCUT_H_
-#define MUMBLE_MUMBLE_GLOBALSHORTCUT_H_
+#ifndef NIFTYKB_GLOBALSHORTCUT_H_
+#define NIFTYKB_GLOBALSHORTCUT_H_
+
+#include "Settings.h"
+#include "Timer.h"
 
 #include <QtCore/QtGlobal>
 #include <QtCore/QThread>
@@ -40,9 +43,6 @@
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QComboBox>
 #include <QtWidgets/QDialog>
-
-#include "Settings.h"
-#include "Timer.h"
 
 class GlobalShortcut : public QObject {
     friend class GlobalShortcutEngine;
@@ -202,4 +202,4 @@ class GlobalShortcutEngine : public QThread {
     void buttonPressed(bool last);
 };
 
-#endif
+#endif // NIFTYKB_GLOBALSHORTCUT_H_

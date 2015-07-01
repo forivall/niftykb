@@ -29,12 +29,13 @@
 */
 /* Modifications (c) 2015 Jordan Klassen, GPLv3 or later license */
 
-#ifndef MUMBLE_MUMBLE_GLOBALSHORTCUT_WIN_H_
-#define MUMBLE_MUMBLE_GLOBALSHORTCUT_WIN_H_
+#ifndef NIFTYKB_GLOBALSHORTCUT_WIN_H_
+#define NIFTYKB_GLOBALSHORTCUT_WIN_H_
 
-#include "common.h"
 #include "GlobalShortcut.h"
 #include "Timer.h"
+
+#include <QSet>
 
 #define DIRECTINPUT_VERSION 0x0800
 #include <dinput.h>
@@ -93,4 +94,4 @@ class GlobalShortcutWin : public GlobalShortcutEngine {
 
 uint qHash(const GUID &);
 
-#endif
+#endif // NIFTYKB_GLOBALSHORTCUT_WIN_H_

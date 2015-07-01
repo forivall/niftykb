@@ -30,8 +30,8 @@
 */
 /* Modifications (c) 2015 Jordan Klassen, GPLv3 or later license */
 
-#ifndef MUMBLE_MUMBLE_SETTINGS_H_
-#define MUMBLE_MUMBLE_SETTINGS_H_
+#ifndef NIFTYKB_SETTINGS_H_
+#define NIFTYKB_SETTINGS_H_
 
 #include <QtCore/QVariant>
 #include <QtCore/QList>
@@ -94,4 +94,4 @@ struct Settings {
   void save();
 };
 
-#endif
+#endif // NIFTYKB_SETTINGS_H_
