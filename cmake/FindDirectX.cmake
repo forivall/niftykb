@@ -14,28 +14,65 @@
 INCLUDE(FindPackageHandleStandardArgs)
 INCLUDE(HandleLibraryTypes)
 
-FIND_PATH(DIRECTX_INCLUDE_DIR dinput.h
-  PATHS $ENV{DXSDK_DIR}
-  PATH_SUFFIXES include
-)
-FIND_LIBRARY(DIRECTX_LIBRARY_input dinput8
-  PATHS $ENV{DXSDK_DIR}
-  PATH_SUFFIXES lib Lib lib/x86 Lib/x86
-  NO_DEFAULT_PATH # Or else CMake 2.6.0 will find the dll in system32 on windows
-)
-FIND_LIBRARY(DIRECTX_LIBRARY_input dinput8
-  PATHS $ENV{DXSDK_DIR}
-  PATH_SUFFIXES lib Lib lib/x86 Lib/x86
-)
-FIND_LIBRARY(DIRECTX_LIBRARY_guid dxguid
-  PATHS $ENV{DXSDK_DIR}
-  PATH_SUFFIXES lib Lib lib/x86 Lib/x86
-  NO_DEFAULT_PATH # Or else CMake 2.6.0 will find the dll in system32 on windows
-)
-FIND_LIBRARY(DIRECTX_LIBRARY_guid dxguid
-  PATHS $ENV{DXSDK_DIR}
-  PATH_SUFFIXES lib Lib lib/x86 Lib/x86
-)
+# TODO: find a better way to detect 64 bit.
+MACRO(EVAL_COND name)
+   IF(${ARGN})
+     SET(${name} 1)
+   ELSE(${ARGN})
+     SET(${name} 0)
+   ENDIF(${ARGN})
+ENDMACRO(EVAL_COND)
+
+string(FIND "$ENV{LIB}" "amd64" DIRECTX_ARCH_64BIT)
+EVAL_COND(DIRECTX_ARCH_IS_32BIT ${DIRECTX_ARCH_64BIT} EQUAL "-1")
+
+if(DIRECTX_ARCH_IS_32BIT)
+  FIND_PATH(DIRECTX_INCLUDE_DIR dinput.h
+    PATHS $ENV{DXSDK_DIR}
+    PATH_SUFFIXES include
+  )
+  FIND_LIBRARY(DIRECTX_LIBRARY_input dinput8
+    PATHS $ENV{DXSDK_DIR}
+    PATH_SUFFIXES lib Lib lib/x86 Lib/x86
+    NO_DEFAULT_PATH # Or else CMake 2.6.0 will find the dll in system32 on windows
+  )
+  FIND_LIBRARY(DIRECTX_LIBRARY_input dinput8
+    PATHS $ENV{DXSDK_DIR}
+    PATH_SUFFIXES lib Lib lib/x86 Lib/x86
+  )
+  FIND_LIBRARY(DIRECTX_LIBRARY_guid dxguid
+    PATHS $ENV{DXSDK_DIR}
+    PATH_SUFFIXES lib Lib lib/x86 Lib/x86
+    NO_DEFAULT_PATH # Or else CMake 2.6.0 will find the dll in system32 on windows
+  )
+  FIND_LIBRARY(DIRECTX_LIBRARY_guid dxguid
+    PATHS $ENV{DXSDK_DIR}
+    PATH_SUFFIXES lib Lib lib/x86 Lib/x86
+  )
+else(DIRECTX_ARCH_IS_32BIT)
+  FIND_PATH(DIRECTX_INCLUDE_DIR dinput.h
+    PATHS $ENV{DXSDK_DIR}
+    PATH_SUFFIXES include
+  )
+  FIND_LIBRARY(DIRECTX_LIBRARY_input dinput8
+    PATHS $ENV{DXSDK_DIR}
+    PATH_SUFFIXES lib Lib lib/x64 Lib/x64
+    NO_DEFAULT_PATH # Or else CMake 2.6.0 will find the dll in system32 on windows
+  )
+  FIND_LIBRARY(DIRECTX_LIBRARY_input dinput8
+    PATHS $ENV{DXSDK_DIR}
+    PATH_SUFFIXES lib Lib lib/x64 Lib/x64
+  )
+  FIND_LIBRARY(DIRECTX_LIBRARY_guid dxguid
+    PATHS $ENV{DXSDK_DIR}
+    PATH_SUFFIXES lib Lib lib/x64 Lib/x64
+    NO_DEFAULT_PATH # Or else CMake 2.6.0 will find the dll in system32 on windows
+  )
+  FIND_LIBRARY(DIRECTX_LIBRARY_guid dxguid
+    PATHS $ENV{DXSDK_DIR}
+    PATH_SUFFIXES lib Lib lib/x64 Lib/x64
+  )
+endif(DIRECTX_ARCH_IS_32BIT)
 
 # Handle the REQUIRED argument and set DIRECTX_FOUND
 FIND_PACKAGE_HANDLE_STANDARD_ARGS(DirectX DEFAULT_MSG
