@@ -37,6 +37,11 @@ void MainWindow::on_gsMailslotMessage_triggered(bool down, QVariant press, QVari
   LPTSTR message;
   DWORD writtenBytes;
 
+  qsMessage = down ? press.toString() : release.toString();
+  if (qsMessage.isEmpty()) {
+    return;
+  }
+
   slotHandle = CreateFile(MAILSLOT_PATH,
     GENERIC_WRITE,
     FILE_SHARE_READ,
@@ -51,7 +56,6 @@ void MainWindow::on_gsMailslotMessage_triggered(bool down, QVariant press, QVari
     return;
   }
 
-  qsMessage = down ? press.toString() : release.toString();
   // message = const_cast<LPTSTR>(reinterpret_cast<LPCTSTR>(qsMessage.utf16()));
   qbaMessage = qsMessage.toLatin1();
   message = const_cast<LPTSTR>(reinterpret_cast<LPCTSTR>(qbaMessage.data()));

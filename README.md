@@ -35,7 +35,6 @@ You can also use qt creator:joy_cat: or :see_no_evil:visual:hear_no_evil:studio:
 - Automatically close to tray
 - Add startup arguments to start hidden to tray
 - Support [g-keys](http://gaming.logitech.com/developers), either with the pure lib or with nil.
-- Don't send mailslot message if the message is blank
 - Detect which keyboard is being used, like nil
 - Get suppress working, especially for keys that are on the default layout
 - Use a usb lib to control the led on the azio levetron mech5
