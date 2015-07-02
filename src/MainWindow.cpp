@@ -173,14 +173,12 @@ void MainWindow::on_gsMailslotMessage_triggered(bool down, QVariant press, QVari
   }
 }
 
-
-void MainWindow::on_gsRunProgram_triggered(bool down, QVariant, QVariant) {
-  qDebug("Push to mute triggered!");
+void MainWindow::on_gsRunProgram_down(QVariant) {
+  qDebug("Run Program down!");
 }
 
-
-void MainWindow::on_gsKeyMapping_down(QVariant v) {
-  qDebug("Mute self down!");
+void MainWindow::on_gsKeyMapping_triggered(bool down, QVariant press, QVariant) {
+  qDebug("Key mapping triggered!");
 }
 
 void MainWindow::on_gsDebugMessage_triggered(bool down, QVariant press, QVariant release) {
