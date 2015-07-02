@@ -24,7 +24,7 @@ include_directories(
 add_executable(
   niftykb WIN32 main.cpp
   ShortcutEditor.cpp ShortcutEditorWidgets.cpp
-  MainWindow.cpp
+  MainWindow.cpp MainWindowActions.cpp
   GlobalShortcut.cpp
   GlobalShortcut_win.cpp os_win.cpp
   Timer.cpp Settings.cpp Global.cpp
