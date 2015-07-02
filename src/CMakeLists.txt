@@ -28,6 +28,7 @@ add_executable(
   GlobalShortcut.cpp
   GlobalShortcut_win.cpp os_win.cpp
   Timer.cpp Settings.cpp Global.cpp
+  niftykb.rc
   ${UI_RESOURCES}
   ${UI_HEADERS}
 )

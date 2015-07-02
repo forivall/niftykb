@@ -3,6 +3,7 @@
 !/build-x[68][46]-debug/.gitignore
 /build-x[68][46]-release/*
 !/build-x[68][46]-release/.gitignore
+/build*/*
 node_modules/
 
 ## Visual Studio temporary files

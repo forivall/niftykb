@@ -42,8 +42,8 @@ void MainWindow::createActions() {
 }
 
 void MainWindow::setupTrayIcon() {
-  qiIcon.addFile(":/assets/monkey_face_16x16.png");
-  qstiIcon = new QSystemTrayIcon(qiIcon, this);
+  qiTrayIcon.addFile(":/assets/monkey_face_16x16.png");
+  qstiIcon = new QSystemTrayIcon(qiTrayIcon, this);
   qstiIcon->setToolTip(tr("NiftyKb"));
   qstiIcon->setObjectName(QLatin1String("Icon"));
 
@@ -86,8 +86,12 @@ void MainWindow::setupGui()  {
   // qmTray->addAction(qaQuit);
   qstiIcon->setContextMenu(qmTray);
 
-	updateTrayIcon();
+  updateTrayIcon();
 
+
+  qiWindowIcon.addFile(":/assets/monkey_face_64x64.png");
+  setWindowIcon(qiWindowIcon);
+  resize(600, 450);
 }
 
 void MainWindow::updateTrayIcon() {
@@ -108,7 +112,7 @@ void MainWindow::updateTrayIcon() {
     //   break;
     // }
   } else {
-    qstiIcon->setIcon(qiIcon);
+    qstiIcon->setIcon(qiTrayIcon);
   }
 }
 

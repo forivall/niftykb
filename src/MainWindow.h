@@ -19,7 +19,8 @@ public:
 
   QSystemTrayIcon *qstiIcon;
   QMenu *qmTray;
-  QIcon qiIcon;
+  QIcon qiTrayIcon;
+  QIcon qiWindowIcon;
   GlobalShortcut *gsPushTalk, *gsPushMute, *gsMuteSelf, *gsDeafSelf;
 
   void toggleWindow();
