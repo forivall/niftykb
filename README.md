@@ -4,6 +4,8 @@ Allows mapping hard-to-detect keys to output commands over [Windows' MailSlot IP
 
 Works together with the [niftykb-ts3 plugin](https://github.com/forivall/niftykb-ts3) for [Teamspeak 3](http://teamspeak.com) Plugin. Let me know if you have any other uses for this!
 
+![Screenshot](http://i.imgur.com/ZZsRVhO.png)
+
 Adapted from mumble's global keybinding code. May be refactored to use [nil](https://github.com/noorus/nil) in the future.
 
 Depends on Qt 5+, DirectInput, boost (headers only), cmake (to build).
