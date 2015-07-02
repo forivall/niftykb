@@ -134,7 +134,7 @@ bool MainWindow::nativeEvent(const QByteArray &, void *message, long *) {
 #define MAILSLOT_PATH "\\\\.\\mailslot\\niftykb"
 
 void MainWindow::on_gsMailslotMessage_triggered(bool down, QVariant press, QVariant release) {
-  qDebug("Mailslot Message triggered! %d", down);
+  // qDebug("Mailslot Message triggered! %d", down);
   // TODO: cache and share mailslot handle
   HANDLE slotHandle;
   QString qsMessage;

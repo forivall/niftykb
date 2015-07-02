@@ -209,7 +209,7 @@ QString ShortcutDelegate::displayText(const QVariant &item, const QLocale &loc) 
     }
   }
 
-  qWarning("ShortcutDelegate::displayText Unknown type %d", item.type());
+  // qWarning("ShortcutDelegate::displayText Unknown type %d", item.type());
 
   return QStyledItemDelegate::displayText(item,loc);
 }

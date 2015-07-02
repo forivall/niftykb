@@ -31,5 +31,7 @@ You can also use qt creator:joy_cat: or :see_no_evil:visual:hear_no_evil:studio:
 ## TODO
 - Release built executables
 - Improve documentation
-- Screenshots!
+- Add right click menu for tray icon
+- Automatically close to tray
+- Add startup arguments to start hidden to tray
 - Support [g-keys](http://gaming.logitech.com/developers), either with the pure lib or with nil.
