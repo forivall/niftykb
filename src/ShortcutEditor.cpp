@@ -11,7 +11,8 @@
 enum ShortcutListItem {
   BUTTON = 0,
   ACTION,
-  DATA,
+  PRESS_DATA,
+  RELEASE_DATA,
   SUPPRESS,
   _COUNT
 };
@@ -30,7 +31,9 @@ ShortcutEditor::ShortcutEditor(QWidget *parent) :
 
   qtwShortcuts->header()->setSectionResizeMode(ShortcutListItem::ACTION, QHeaderView::Fixed);
   qtwShortcuts->header()->resizeSection(ShortcutListItem::ACTION, 150);
-  qtwShortcuts->header()->setSectionResizeMode(ShortcutListItem::BUTTON, QHeaderView::Stretch);
+  qtwShortcuts->header()->setSectionResizeMode(ShortcutListItem::BUTTON, QHeaderView::Interactive);
+  qtwShortcuts->header()->setSectionResizeMode(ShortcutListItem::PRESS_DATA, QHeaderView::Interactive);
+  qtwShortcuts->header()->setSectionResizeMode(ShortcutListItem::RELEASE_DATA, QHeaderView::Interactive);
   if (canSuppress){
     qtwShortcuts->header()->setSectionResizeMode(ShortcutListItem::SUPPRESS, QHeaderView::ResizeToContents);
   }
@@ -85,12 +88,16 @@ void ShortcutEditor::on_qtwShortcuts_itemChanged(QTreeWidgetItem *item, int) {
   // which action to take
   sc.iIndex = item->data(ShortcutListItem::ACTION, Qt::DisplayRole).toInt();
   sc.bSuppress = item->checkState(ShortcutListItem::SUPPRESS) == Qt::Checked;
-  // sc.qvData = item->data(ShortcutListItem::DATA, Qt::DisplayRole);
+  sc.qvPressData = item->data(ShortcutListItem::PRESS_DATA, Qt::DisplayRole);
+  sc.qvReleaseData = item->data(ShortcutListItem::RELEASE_DATA, Qt::DisplayRole);
 
   const ::GlobalShortcut *gs = GlobalShortcutEngine::engine->qmShortcuts.value(sc.iIndex);
-  // if (gs && sc.qvData.type() != gs->qvDefault.type()) {
-  //   item->setData(ShortcutListItem::DATA, Qt::DisplayRole, gs->qvDefault);
-  // }
+  if (gs && sc.qvPressData.type() != gs->qvPressDefault.type()) {
+    item->setData(ShortcutListItem::PRESS_DATA, Qt::DisplayRole, gs->qvPressDefault);
+  }
+  if (gs && sc.qvReleaseData.type() != gs->qvReleaseDefault.type()) {
+    item->setData(ShortcutListItem::RELEASE_DATA, Qt::DisplayRole, gs->qvReleaseDefault);
+  }
 }
 
 
@@ -117,11 +124,16 @@ QTreeWidgetItem *ShortcutEditor::itemForShortcut(const Shortcut &sc) const {
   item->setData(ShortcutListItem::BUTTON, Qt::DisplayRole, sc.qlButtons);
   item->setData(ShortcutListItem::ACTION, Qt::DisplayRole, static_cast<unsigned int>(sc.iIndex));
   item->setCheckState(ShortcutListItem::SUPPRESS, sc.bSuppress ? Qt::Checked : Qt::Unchecked);
-  // TODO: change to textinput + qstring
-  if (sc.qvData.isValid() && gs && (sc.qvData.type() == gs->qvDefault.type())) {
-    item->setData(ShortcutListItem::DATA, Qt::DisplayRole, sc.qvData);
+
+  if (sc.qvPressData.isValid() && gs && (sc.qvPressData.type() == gs->qvPressDefault.type())) {
+    item->setData(ShortcutListItem::PRESS_DATA, Qt::DisplayRole, sc.qvPressData);
   } else if (gs) {
-    item->setData(ShortcutListItem::DATA, Qt::DisplayRole, gs->qvDefault);
+    item->setData(ShortcutListItem::PRESS_DATA, Qt::DisplayRole, gs->qvPressDefault);
+  }
+  if (sc.qvReleaseData.isValid() && gs && (sc.qvReleaseData.type() == gs->qvReleaseDefault.type())) {
+    item->setData(ShortcutListItem::RELEASE_DATA, Qt::DisplayRole, sc.qvReleaseData);
+  } else if (gs) {
+    item->setData(ShortcutListItem::RELEASE_DATA, Qt::DisplayRole, gs->qvReleaseDefault);
   }
   item->setFlags(item->flags() | Qt::ItemIsEditable);
 

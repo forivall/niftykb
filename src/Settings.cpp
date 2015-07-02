@@ -41,7 +41,11 @@ bool Shortcut::operator < (const Shortcut &other) const {
 }
 
 bool Shortcut::operator == (const Shortcut &other) const {
-  return (iIndex == other.iIndex) && (qlButtons == other.qlButtons) && (qvData == other.qvData) && (bSuppress == other.bSuppress);
+  return (iIndex == other.iIndex) && (qlButtons == other.qlButtons) && (qvPressData == other.qvPressData) && (qvReleaseData == other.qvReleaseData) && (bSuppress == other.bSuppress);
+}
+
+QPair<QVariant,QVariant> Shortcut::getDataPair() const {
+  return QPair<QVariant,QVariant>(qvPressData, qvReleaseData);
 }
 
 ShortcutTarget::ShortcutTarget() {
@@ -144,7 +148,8 @@ void Settings::load(QSettings* settings_ptr) {
     LOAD(s.iIndex, "index");
     LOAD(s.qlButtons, "keys");
     LOAD(s.bSuppress, "suppress");
-    s.qvData = settings_ptr->value(QLatin1String("data"));
+    s.qvPressData = settings_ptr->value(QLatin1String("pressdata"));
+    s.qvReleaseData = settings_ptr->value(QLatin1String("releasedata"));
     if (s.iIndex >= -1) {
       qlShortcuts << s;
     }
@@ -168,7 +173,8 @@ void Settings::save() {
     settings_ptr->setValue(QLatin1String("index"), s.iIndex);
     settings_ptr->setValue(QLatin1String("keys"), s.qlButtons);
     settings_ptr->setValue(QLatin1String("suppress"), s.bSuppress);
-    settings_ptr->setValue(QLatin1String("data"), s.qvData);
+    settings_ptr->setValue(QLatin1String("pressdata"), s.qvPressData);
+    settings_ptr->setValue(QLatin1String("releasedata"), s.qvReleaseData);
   }
   settings_ptr->endArray();
   settings_ptr->sync();

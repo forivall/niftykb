@@ -21,7 +21,7 @@ public:
   QMenu *qmTray;
   QIcon qiTrayIcon;
   QIcon qiWindowIcon;
-  GlobalShortcut *gsPushTalk, *gsPushMute, *gsMuteSelf, *gsDeafSelf;
+  GlobalShortcut *gsMailslotMessage, *gsRunProgram, *gsKeyMapping, *gsDebugMessage;
 
   void toggleWindow();
   bool nativeEvent(const QByteArray &, void *, long *) Q_DECL_OVERRIDE;
@@ -33,10 +33,10 @@ private:
 signals:
 
 public slots:
-  void on_PushToTalk_triggered(bool, QVariant);
-  void on_PushToMute_triggered(bool, QVariant);
-  void on_gsMuteSelf_down(QVariant);
-  void on_gsDeafSelf_down(QVariant);
+  void on_gsMailslotMessage_triggered(bool, QVariant, QVariant);
+  void on_gsRunProgram_triggered(bool, QVariant, QVariant);
+  void on_gsKeyMapping_down(QVariant);
+  void on_gsDebugMessage_triggered(bool, QVariant, QVariant);
 };
 
 #endif // NIFTYKB_MAINWINDOW_H

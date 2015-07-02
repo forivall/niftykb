@@ -44,19 +44,19 @@ class GlobalShortcut : public QObject {
     Q_OBJECT
     Q_DISABLE_COPY(GlobalShortcut)
   protected:
-    QList<QVariant> qlActive;
+    QList<QPair<QVariant,QVariant>> qlActive;
   signals:
     void down(QVariant);
-    void triggered(bool, QVariant);
+    void triggered(bool, QVariant, QVariant);
   public:
     QString qsToolTip;
     QString qsWhatsThis;
     QString name;
-    QVariant qvDefault;
-    bool bExpert;
+    QVariant qvPressDefault;
+    QVariant qvReleaseDefault;
     int idx;
 
-    GlobalShortcut(QObject *parent, int index, QString qsName, bool expert = true, QVariant def = QVariant());
+    GlobalShortcut(QObject *parent, int index, QString qsName, QVariant defPress = QVariant(), QVariant defRelease = QVariant());
     ~GlobalShortcut() Q_DECL_OVERRIDE;
 
     bool active() const {

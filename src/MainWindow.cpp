@@ -23,22 +23,24 @@ MainWindow::MainWindow(QWidget *parent) :
 void MainWindow::createActions() {
   int idx = 1;
   // broadcast mailslot message
-  gsPushTalk = new GlobalShortcut(this, idx++, tr("Push-to-Talk", "Global Shortcut"), false);
-  gsPushTalk->setObjectName(QLatin1String("PushToTalk"));
-  // gsPushTalk->qsToolTip = tr("Push and hold this button to send voice.", "Global Shortcut");
-  // gsPushTalk->qsWhatsThis = tr("This configures the push-to-talk button, and as long as you hold this button down, you will transmit voice.", "Global Shortcut");
+  gsMailslotMessage = new GlobalShortcut(this, idx++, tr("Send Mailslot Message", "Global Shortcut"), "", "");
+  gsMailslotMessage->setObjectName(QLatin1String("gsMailslotMessage"));
+  // gsMailslotMessage->qsToolTip = tr("Push and hold this button to send voice.", "Global Shortcut");
+  // gsMailslotMessage->qsWhatsThis = tr("This configures the push-to-talk button, and as long as you hold this button down, you will transmit voice.", "Global Shortcut");
 
-  // run exe
-  gsPushMute = new GlobalShortcut(this, idx++, tr("Push-to-Mute", "Global Shortcut"));
-  gsPushMute->setObjectName(QLatin1String("PushToMute"));
+  idx++;
+  // // run exe
+  // gsRunProgram = new GlobalShortcut(this, idx++, tr("Run Program", "Global Shortcut"));
+  // gsRunProgram->setObjectName(QLatin1String("gsRunProgram"));
 
-  // fake keystroke
-  gsMuteSelf = new GlobalShortcut(this, idx++, tr("Mute Self", "Global Shortcut"), false, 0);
-  gsMuteSelf->setObjectName(QLatin1String("gsMuteSelf"));
+  idx++;
+  // // fake keystroke
+  // gsKeyMapping = new GlobalShortcut(this, idx++, tr("Map to other Key", "Global Shortcut"), 0);
+  // gsKeyMapping->setObjectName(QLatin1String("gsKeyMapping"));
 
   // send debug message
-  gsDeafSelf = new GlobalShortcut(this, idx++, tr("Deafen Self", "Global Shortcut"), false, 0);
-  gsDeafSelf->setObjectName(QLatin1String("gsDeafSelf"));
+  gsDebugMessage = new GlobalShortcut(this, idx++, tr("Send Debug Message", "Global Shortcut"), "", "");
+  gsDebugMessage->setObjectName(QLatin1String("gsDebugMessage"));
 }
 
 void MainWindow::setupTrayIcon() {
@@ -129,32 +131,70 @@ bool MainWindow::nativeEvent(const QByteArray &, void *message, long *) {
 //                                 HANDLERS                                  //
 ///////////////////////////////////////////////////////////////////////////////
 
-void MainWindow::on_PushToTalk_triggered(bool down, QVariant) {
-  qDebug("Push to talk triggered!");
-  // g.iPrevTarget = 0;
-  // if (down) {
-  //   g.uiDoublePush = g.tDoublePush.restart();
-  //   g.iPushToTalk++;
-  // } else if (g.iPushToTalk > 0) {
-  //   QTimer::singleShot(g.s.uiPTTHold, this, SLOT(pttReleased()));
-  // }
+#define MAILSLOT_PATH "\\\\.\\mailslot\\niftykb"
+
+void MainWindow::on_gsMailslotMessage_triggered(bool down, QVariant press, QVariant release) {
+  qDebug("Mailslot Message triggered! %d", down);
+  // TODO: cache and share mailslot handle
+  HANDLE slotHandle;
+  QString qsMessage;
+  QByteArray qbaMessage;
+  LPTSTR message;
+  DWORD writtenBytes;
+
+  slotHandle = CreateFile(MAILSLOT_PATH,
+    GENERIC_WRITE,
+    FILE_SHARE_READ,
+    (LPSECURITY_ATTRIBUTES) NULL,
+    OPEN_EXISTING,
+    FILE_ATTRIBUTE_NORMAL,
+    (HANDLE) NULL);
+
+  if (slotHandle == INVALID_HANDLE_VALUE) {
+    auto err = GetLastError();
+    qWarning("Couldn't connect to mailslot! %d", err);
+    return;
+  }
+
+  qsMessage = down ? press.toString() : release.toString();
+  // message = const_cast<LPTSTR>(reinterpret_cast<LPCTSTR>(qsMessage.utf16()));
+  qbaMessage = qsMessage.toLatin1();
+  message = const_cast<LPTSTR>(reinterpret_cast<LPCTSTR>(qbaMessage.data()));
+
+  BOOL ok = WriteFile(slotHandle, message,
+    (DWORD)(lstrlen(message) + 1)*sizeof(TCHAR),
+    &writtenBytes,
+    (LPOVERLAPPED) NULL);
+
+  if (!ok) {
+    auto err = GetLastError();
+    qWarning("Couldn't write mailslot message! %d", err);
+    return;
+  }
 }
 
-// void MainWindow::pttReleased() {
-//   if (g.iPushToTalk > 0) {
-//     g.iPushToTalk--;
-//   }
-// }
 
-void MainWindow::on_PushToMute_triggered(bool down, QVariant) {
+void MainWindow::on_gsRunProgram_triggered(bool down, QVariant, QVariant) {
   qDebug("Push to mute triggered!");
 }
 
 
-void MainWindow::on_gsMuteSelf_down(QVariant v) {
+void MainWindow::on_gsKeyMapping_down(QVariant v) {
   qDebug("Mute self down!");
 }
 
-void MainWindow::on_gsDeafSelf_down(QVariant v) {
-  qDebug("Deaf self down!");
+void MainWindow::on_gsDebugMessage_triggered(bool down, QVariant press, QVariant release) {
+  if (down) {
+    if (press.canConvert(QMetaType::QString)) {
+      qDebug("%s", qPrintable(press.toString()));
+    } else {
+      qDebug() << press;
+    }
+  } else {
+    if (release.canConvert(QMetaType::QString)) {
+      qDebug("%s", qPrintable(release.toString()));
+    } else {
+      qDebug() << release;
+    }
+  }
 }

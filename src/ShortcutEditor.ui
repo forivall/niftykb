@@ -16,6 +16,9 @@
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QTreeWidget" name="qtwShortcuts">
+     <property name="indentation">
+      <number>0</number>
+     </property>
      <column>
       <property name="text">
        <string>Key</string>
@@ -28,7 +31,12 @@
      </column>
      <column>
       <property name="text">
-       <string>Debug Message</string>
+       <string>Press</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Release</string>
       </property>
      </column>
      <column>
@@ -70,7 +78,7 @@
      <item>
       <widget class="QPushButton" name="qpbSave">
        <property name="text">
-        <string>Save</string>
+        <string>Save &amp;&amp; Apply</string>
        </property>
       </widget>
      </item>

@@ -48,11 +48,13 @@
 struct Shortcut {
   int iIndex;
   QList<QVariant> qlButtons;
-  QVariant qvData;
+  QVariant qvPressData;
+  QVariant qvReleaseData;
   bool bSuppress;
   bool operator <(const Shortcut &) const;
   bool isServerSpecific() const;
   bool operator ==(const Shortcut &) const;
+  QPair<QVariant,QVariant> getDataPair() const;
 };
 
 struct ShortcutTarget {
