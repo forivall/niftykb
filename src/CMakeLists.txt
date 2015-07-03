@@ -9,6 +9,8 @@ find_package(Qt5Gui)
 
 include_directories(${Qt5Gui_PRIVATE_INCLUDE_DIRS})
 find_package(Qt5Widgets REQUIRED)
+find_package(Qt5Network REQUIRED)
+find_package(QtSingleApplication REQUIRED)
 find_package(DirectX REQUIRED)
 find_package(Boost REQUIRED)
 
@@ -29,9 +31,10 @@ add_executable(
   GlobalShortcut_win.cpp os_win.cpp
   Timer.cpp Settings.cpp Global.cpp
   niftykb.rc
+  ${QtSingleApplication_SOURCES}
   ${UI_RESOURCES}
   ${UI_HEADERS}
 )
 
 # Use the Widgets module from Qt 5.
-target_link_libraries(niftykb Qt5::Widgets ${DIRECTX_LIBRARY_input} ${DIRECTX_LIBRARY_guid})
+target_link_libraries(niftykb Qt5::Widgets Qt5::Network ${DIRECTX_LIBRARY_input} ${DIRECTX_LIBRARY_guid})

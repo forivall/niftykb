@@ -24,5 +24,7 @@ copy %QtBinDir%\Qt5Guid.dll %projdir%\build-%arch%-debug\src
 copy %QtBinDir%\Qt5Guid.pdb %projdir%\build-%arch%-debug\src
 copy %QtBinDir%\Qt5Widgetsd.dll %projdir%\build-%arch%-debug\src
 copy %QtBinDir%\Qt5Widgetsd.pdb %projdir%\build-%arch%-debug\src
+copy %QtBinDir%\Qt5Networkd.dll %projdir%\build-%arch%-debug\src
+copy %QtBinDir%\Qt5Networkd.pdb %projdir%\build-%arch%-debug\src
 
 @echo off

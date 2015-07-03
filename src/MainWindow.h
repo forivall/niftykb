@@ -2,9 +2,10 @@
 #ifndef NIFTYKB_MAINWINDOW_H
 #define NIFTYKB_MAINWINDOW_H
 
+#include <QCommandLineParser>
 #include <QMainWindow>
-#include <QSystemTrayIcon>
 #include <QMenu>
+#include <QSystemTrayIcon>
 
 #include "GlobalShortcut.h"
 
@@ -13,7 +14,7 @@ class MainWindow : public QMainWindow
 private:
   Q_OBJECT
 public:
-  explicit MainWindow(QWidget *parent = 0);
+  explicit MainWindow(QWidget *parent = 0, QCommandLineParser *args = 0);
 
   unsigned int uiNewHardware;
 

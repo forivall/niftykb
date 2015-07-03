@@ -6,7 +6,7 @@
 #include "Global.h"
 #include "ShortcutEditor.h"
 
-MainWindow::MainWindow(QWidget *parent) :
+MainWindow::MainWindow(QWidget *parent, QCommandLineParser *args) :
   QMainWindow(parent)
 {
   uiNewHardware = 1; // needs to be set to 1 so that an initial scan takes place
