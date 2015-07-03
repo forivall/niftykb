@@ -8,8 +8,11 @@
 #include <QSystemTrayIcon>
 
 #include "GlobalShortcut.h"
+#include "ShortcutEditor.h"
 
-class MainWindow : public QMainWindow
+#include "Ui_MainWindow.h"
+
+class MainWindow : public QMainWindow, public Ui_MainWindow
 {
 private:
   Q_OBJECT
@@ -18,13 +21,14 @@ public:
 
   unsigned int uiNewHardware;
 
+  ShortcutEditor *shortcutEditor;
+
   QSystemTrayIcon *qstiIcon;
   QMenu *qmTray;
   QIcon qiTrayIcon;
   QIcon qiWindowIcon;
   GlobalShortcut *gsMailslotMessage, *gsRunProgram, *gsKeyMapping, *gsDebugMessage;
 
-  void toggleWindow();
   bool nativeEvent(const QByteArray &, void *, long *) Q_DECL_OVERRIDE;
 private:
   void createActions();
@@ -34,6 +38,7 @@ private:
 signals:
 
 public slots:
+  void toggleWindow();
   void on_gsMailslotMessage_triggered(bool, QVariant, QVariant);
   void on_gsRunProgram_down(QVariant);
   void on_gsKeyMapping_triggered(bool, QVariant, QVariant);

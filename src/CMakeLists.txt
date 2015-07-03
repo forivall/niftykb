@@ -14,7 +14,7 @@ find_package(QtSingleApplication REQUIRED)
 find_package(DirectX REQUIRED)
 find_package(Boost REQUIRED)
 
-qt5_wrap_ui(UI_HEADERS ShortcutEditor.ui)
+qt5_wrap_ui(UI_HEADERS ShortcutEditor.ui MainWindow.ui)
 qt5_add_resources(UI_RESOURCES resources.qrc)
 
 include_directories(

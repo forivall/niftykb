@@ -15,9 +15,8 @@ MainWindow::MainWindow(QWidget *parent, QCommandLineParser *args) :
   setupTrayIcon();
   setupGui();
 
-  QMetaObject::connectSlotsByName(this);
-
-  setCentralWidget(new ShortcutEditor(this));
+  shortcutEditor = new ShortcutEditor(this);
+  setCentralWidget(shortcutEditor);
 }
 
 void MainWindow::setupTrayIcon() {
@@ -52,6 +51,8 @@ void MainWindow::toggleWindow() {
 }
 
 void MainWindow::setupGui()  {
+  setupUi(this);
+
   setWindowTitle(tr("NiftyKb"));// -- %1").arg(QLatin1String(MUMBLE_RELEASE)));
 
   // if (! g.s.qbaMainWindowGeometry.isNull())
