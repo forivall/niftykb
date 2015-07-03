@@ -35,7 +35,7 @@ You can also use qt creator:joy_cat: or :see_no_evil:visual:hear_no_evil:studio:
   - Use `QStringList` in the qvariant
 - Add right click menu for tray icon
 - Automatically close to tray
-- Add startup arguments to start hidden to tray
+- Add option to start hidden to tray
 - Support [g-keys](http://gaming.logitech.com/developers), either with the pure lib or with nil.
 - Detect which keyboard is being used, like nil
 - Get suppress working, especially for keys that are on the default layout
